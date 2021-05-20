@@ -36,6 +36,7 @@
         <li class="nav-item"><a class="nav-link" href="?page=profile">Profile</a></li>
         <li class="nav-item"><a class="nav-link" href="?page=activity">Activite</a></li>
         <li class="nav-item"><a class="nav-link" href="?page=addevent">AJOUTER EVENT</a></li>
+        <li class="nav-item"><a class="nav-link" href="?page=events">Voir les evenements</a></li>
       </ul>
     </div>
   </div>

@@ -9,7 +9,7 @@ function db_connect()
     $servername = "localhost";
     $email = "admin";
     $password = "root";
-    $db_name = "eventbrite";
+    $db_name = "eventbright";
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$db_name", $email, $password);
         // set the PDO error mode to exception
@@ -69,23 +69,22 @@ function checkUserPass($email, $password)
 
 function addProduct($userID, $name, $category, $price, $description, $img = 'porduct.png')
 {
-    $img_json = json_encode($img, true);
     db_connect();
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO `products` (`userID`, `name`, `category`, `price`, `description`, `img`) VALUES (:userID, :name, :category, :price, :description, :IMG)");
+    $stmt = $pdo->prepare("INSERT INTO `products` (`userID`, `name`, `category`, `price`, `description`, `img`) VALUES (:userID, :name, :category, :price, :description, :img)");
     $stmt->bindParam(':userID', $userID);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':price', $price, PDO::PARAM_INT);
     $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':IMG', $img_json);
+    $stmt->bindParam(':img', $img);
     $done = $stmt->execute();
     $last_id = $pdo->lastInsertId();
     $pdo = null;
     return $last_id;
 }
 
-function getAll($table = 'products')
+function getAll($table = 'events')
 {
     db_connect();
     global $pdo;
@@ -96,4 +95,22 @@ function getAll($table = 'products')
     $data = $stmt->fetchAll();
     $dpo = null;
     return $data;
+}
+
+function addEvent($userID, $name, $category, $place, $city, $description, $startTime, $img='default.png'){
+    db_connect();
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO `events` (`creatorID`, `name`, `category`, `place`, `city`, `description`, `img`, `postDate`, startTime) 
+                                        VALUES ($userID, :name, :category, :place, :city, :description, :img, NOW(), :startTime)");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':category', $category);
+    $stmt->bindParam(':place', $place);
+    $stmt->bindParam(':city', $city);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':img', $img);
+    $stmt->bindParam(':startTime', $startTime);
+    $done = $stmt->execute();
+    $last_id = $pdo->lastInsertId();
+    $pdo = null;
+    return $last_id;
 }

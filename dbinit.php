@@ -10,7 +10,7 @@ function db_connect()
     $servername = "localhost";
     $email = "admin";
     $password = "root";
-    $db_name = "eventbrite";
+    $db_name = "eventbright";
 
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$db_name", $email, $password);
@@ -47,9 +47,9 @@ function create_table_events()
     db_connect();
     global $pdo;
     $sql = "CREATE TABLE `events` (
-    `eventID` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `creatorID` INT(6) UNSIGNED,
-     FOREIGN KEY (creatorID) REFERENCES users(id),
+    --  FOREIGN KEY (creatorID) REFERENCES users(id),
     `name` VARCHAR(150) NULL DEFAULT NULL,
     `category` VARCHAR(50) NULL DEFAULT NULL,
     `place`  VARCHAR(255) NULL DEFAULT NULL,
@@ -74,9 +74,9 @@ function create_table_sub()
     $sql = "CREATE TABLE `subs` (
     `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     `eventID` INT(6) UNSIGNED,
-    FOREIGN KEY (eventID) REFERENCES events(eventID) ON DELETE CASCADE,
+    -- FOREIGN KEY (eventID) REFERENCES events(id) ON DELETE CASCADE,
     `userID` INT(6) UNSIGNED,
-    FOREIGN KEY (userID) REFERENCES users(id) ON DELETE CASCADE,
+    -- FOREIGN KEY (userID) REFERENCES users(id) ON DELETE CASCADE,
     `subTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($sql);
@@ -84,4 +84,6 @@ function create_table_sub()
     $pdo = null;
 }
 
+create_table_users();
+create_table_events();
 create_table_sub();

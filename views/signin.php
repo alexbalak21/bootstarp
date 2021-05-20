@@ -1,9 +1,9 @@
 <main class="container my-5">
   <h2>S'inscrire:</h2>
-  <form class="row g-3 needs-validation" action="components/controller.php" method="POST" novalidate>
+  <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" novalidate>
   <img class="col-12 mb-4" src="assets/person-plus.svg" alt="person LOGO" width="72" height="57">
 
-    <input type="file" name="fileUpload" class="form-control-file">
+    <input type="file" name="fileToUpload" class="form-control-file">
 
     <div class="col-md-6">
       <label class="form-label">Vote Prènom:</label>

@@ -10,4 +10,4 @@ print_r($_FILES);
 echo "<br><br>FILE:<br>";
 print_r($_SERVER);
 echo "<br><br><br>";
-echo "<a href='initsql.php'>CREATE DATABASE</a>";
+die;

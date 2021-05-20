@@ -2,13 +2,15 @@
 require_once "model.php";
 require_once "upload.php";
 
-// require_once "../dev.php";
-// die;
+
 //-----------------------------------------------REGISTER
 if (isset($_POST['register'])) {
     $img = 'profile.png';
     if (!empty($_FILES['fileToUpload']['name'])) {
         $error = imgFileUpload();
+        if($error == 0)
+        $_GET['uploadError']= $error;
+        else
         $img = $_FILES['uploaded'];
     }
     $email = $_POST['email'];
@@ -19,7 +21,7 @@ if (isset($_POST['register'])) {
     if ($password1 === $password2) {
         $id = registerUser($email, $firstname, $lastname, $password1, $img);
         if ($id > 0) {
-            header("Location: ../index.php?page=login");
+            header("Location: ../index.php?page=login&register=success");
         }
     }
 }
@@ -64,5 +66,41 @@ if (isset($_POST['addProduct'])) {
     if ($lastID > 0) {
         header("Location: ../index.php?page=login");
     }
+}
 
+if (isset( $_POST['addEvent'])){
+    // $user = json_decode($_COOKIE['user'], true);
+    $userID = 12;
+        $img = 'default.png';
+        if (!empty($_FILES['fileToUpload']['name'])) {
+            $error = imgFileUpload();
+            if($error == 0)
+            $_GET['uploadError']= $error;
+            else
+            $img = $_FILES['uploaded'];
+        }
+    $user['id'] = 12;
+    $name = $_POST['eventName'];
+    $category = $_POST['category'];
+    $place = $_POST['place'];
+    $city = $_POST['city'];
+    $description = $_POST['description'];
+    $startTime = $_POST['startTime'];
+    $latsID = addEvent($userID, $name, $category, $place, $city, $description, $startTime, $img);
+    if($latsID > 0){
+        header("Location:../index.php");
+    }
+}
+
+if(isset($_GET['admin'])){
+    //CHECK IF ADMIN
+    $admin = $_GET['admin'];
+    if($admin == 'allevents'){
+        echo "TETS";
+    }
+}
+
+function getAllEvents(){
+    $events = getAll('events');
+    return $events;
 }

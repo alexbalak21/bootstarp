@@ -23,7 +23,7 @@ function imgFileUpload()
     }
 
     // Check file size
-    if ($_FILES["fileToUpload"]["size"] > 500000) {
+    if ($_FILES["fileToUpload"]["size"] > 3000000) {
         $error = "file is too large.";
         $uploadOk = 0;
     }

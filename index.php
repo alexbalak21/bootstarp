@@ -25,7 +25,6 @@ require_once "blocks/navbar.php";
 require_once "blocks/header.php";
 require_once "views/$page.php";
 ?>
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -43,7 +42,6 @@ require_once "views/$page.php";
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-    <script src="js/script.js"></script>
     <footer class="py-5 bg-dark">
       <p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p>
     </footer>
