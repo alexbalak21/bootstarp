@@ -1,10 +1,14 @@
+<?php
+require_once "components/router.php";
+
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -16,17 +20,12 @@
     <title>EventBright</title>
   </head>
   <body>
-   <?php
-    require_once "blocks/navbar.php";
-    require_once "blocks/header.php";
-   ?>
-    <main class="mt-4 container">
-      <h1 class="text-center my-4">TITRE</h1>
-      <?php
-      require_once "blocks/main.php";
-      ?>
-      
-    </main>
+    <?php
+require_once "blocks/navbar.php";
+require_once "blocks/header.php";
+require_once "views/$page.php";
+?>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -44,6 +43,7 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script src="js/script.js"></script>
     <footer class="py-5 bg-dark">
       <p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p>
     </footer>
