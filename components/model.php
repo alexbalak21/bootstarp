@@ -9,7 +9,7 @@ function db_connect()
     $servername = "localhost";
     $email = "admin";
     $password = "root";
-    $db_name = "bestbuy";
+    $db_name = "eventbrite";
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$db_name", $email, $password);
         // set the PDO error mode to exception
@@ -20,22 +20,27 @@ function db_connect()
 }
 
 // CREATE USER
-function registerUser($email, $username, $password, $phone, $img = "profile.png")
+function registerUser($email, $firstname, $lastname, $password, $img = "profile.png")
 {
     $passHash = password_hash($password, PASSWORD_DEFAULT);
+    $validation = md5( rand(0,1000));
     db_connect();
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO `users` (`email`, `username`, `password`, `phone`, `img`, reg_date) VALUES (:email, :username, :passHash, :phone, :img, NOW())");
+    $stmt = $pdo->prepare("INSERT INTO `users` (`email`, `firstname`, `lastname`, `password`, `img`, reg_date, `validation`) VALUES (:email, :firstname, :lastname, :passHash, :img, NOW(), :validation)");
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
     $stmt->bindParam(':passHash', $passHash);
-    $stmt->bindParam(':phone', $phone);
     $stmt->bindParam(':img', $img);
+    $stmt->bindParam(':validation', $validation);
     $done = $stmt->execute();
     $last_id = $pdo->lastInsertId();
     $pdo = null;
     return $last_id;
 }
+
+
+
 //CHECK USER LOGIN
 function checkUserPass($email, $password)
 {

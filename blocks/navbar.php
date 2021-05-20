@@ -34,6 +34,8 @@
         <li class="nav-item"><a class="nav-link" href="?page=login">Login</a></li>
         <li class="nav-item"><a class="nav-link" href="?page=signin">Signin</a></li>
         <li class="nav-item"><a class="nav-link" href="?page=profile">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="?page=activity">Activite</a></li>
+        <li class="nav-item"><a class="nav-link" href="?page=addevent">AJOUTER EVENT</a></li>
       </ul>
     </div>
   </div>

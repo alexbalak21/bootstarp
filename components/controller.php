@@ -2,8 +2,8 @@
 require_once "model.php";
 require_once "upload.php";
 
-require_once "../dev.php";
-die;
+// require_once "../dev.php";
+// die;
 //-----------------------------------------------REGISTER
 if (isset($_POST['register'])) {
     $img = 'profile.png';
@@ -14,10 +14,10 @@ if (isset($_POST['register'])) {
     $email = $_POST['email'];
     $password1 = $_POST['password1'];
     $password2 = $_POST['password2'];
-    $username = $_POST['username'];
-    $phone = $_POST['phone'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     if ($password1 === $password2) {
-        $id = registerUser($email, $username, $password1, $phone, $img);
+        $id = registerUser($email, $firstname, $lastname, $password1, $img);
         if ($id > 0) {
             header("Location: ../index.php?page=login");
         }

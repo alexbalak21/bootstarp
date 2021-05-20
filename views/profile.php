@@ -13,16 +13,17 @@
     <button class="btn btn-lg btn-primary" type="submit">Modifier</button>
     </div>
   </div>
-<div class="col-md-3"></div>
-  <div class="col-md-9 text-center py-5">
-    <h2>Vos activitées: 12</h2>
-
-    <button type="button" class="btn-lg btn-primary">Voir</button>
-    <br>
-    <h2>Activitées Participées: 9</h2>
+<div class="col-md-5"></div>
+  <div class="col-md-7 text-center my-5">
+  <div class="row py-3">
+    <h2 class="px-4">Vos activitées à venir: 12</h2>
     <button type="button" class="btn-lg btn-primary">Voir</button>
   </div>
+  <div class="row py-3">
+    <h2 class="px-4">Participations à venir: 9</h2>
+    <button type="button" class="btn-lg btn-primary">Voir</button>
+  </div>
+  </div>
+  </div>
 
-
-          </div>
   </main>
