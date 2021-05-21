@@ -23,7 +23,7 @@ function db_connect()
 function registerUser($email, $firstname, $lastname, $password, $img = "profile.png")
 {
     $passHash = password_hash($password, PASSWORD_DEFAULT);
-    $validation = md5( rand(0,1000));
+    $validation = md5(rand(0, 1000));
     db_connect();
     global $pdo;
     $stmt = $pdo->prepare("INSERT INTO `users` (`email`, `firstname`, `lastname`, `password`, `img`, reg_date, `validation`) VALUES (:email, :firstname, :lastname, :passHash, :img, NOW(), :validation)");
@@ -39,7 +39,28 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
     return $last_id;
 }
 
+//--------------UPDATE USER
 
+function updateUser($userID, $email, $firstname, $lastname, $password, $img)
+{
+
+    db_connect();
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE `users` SET `email`=:email, `firstname`=:firstname, `lastname`=:lastname, `img`=:img  WHERE `id`=$userID");
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':firstname', $firstname);
+    $stmt->bindParam(':lastname', $lastname);
+    $stmt->bindParam(':img', $img);
+    $updateDone = $stmt->execute();
+    if (!empty($password)) {
+        $passHash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare("UPDATE `users` SET `password`=:passHash");
+        $stmt->bindParam(':passHash', $passHash);
+        $done = $stmt->execute();
+    }
+    $pdo = null;
+    return $updateDone;
+}
 
 //CHECK USER LOGIN
 function checkUserPass($email, $password)
@@ -96,21 +117,116 @@ function getAll($table = 'events')
     $dpo = null;
     return $data;
 }
-
-function addEvent($userID, $name, $category, $place, $city, $description, $startTime, $img='default.png'){
+//-----------------------------------------ADD EVENT
+function addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img = 'default.png')
+{
     db_connect();
     global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO `events` (`creatorID`, `name`, `category`, `place`, `city`, `description`, `img`, `postDate`, startTime) 
-                                        VALUES ($userID, :name, :category, :place, :city, :description, :img, NOW(), :startTime)");
+    $stmt = $pdo->prepare("INSERT INTO `events` (`creatorID`, `name`, `category`, `place`, `city`, `description`, `img`, `postDate`, `date`, `time`)
+                                        VALUES ($userID, :name, :category, :place, :city, :description, :img, NOW(), :date, :time)");
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':category', $category);
     $stmt->bindParam(':place', $place);
     $stmt->bindParam(':city', $city);
     $stmt->bindParam(':description', $description);
     $stmt->bindParam(':img', $img);
-    $stmt->bindParam(':startTime', $startTime);
+    $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':time', $time);
     $done = $stmt->execute();
     $last_id = $pdo->lastInsertId();
     $pdo = null;
     return $last_id;
+}
+//-------------------------------------------------------------------------------------UPDATE EVENT
+function updateEvent($eventID, $name, $category, $place, $city, $description, $date, $time, $img)
+{
+    db_connect();
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE `events` SET `name` = :name, `category` = :category, `place`=:place, `city` = :city, `description`=:description, `img`=:img, `postDate`=NOW(), `date`=:date, `time`=:time WHERE id=$eventID");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':category', $category);
+    $stmt->bindParam(':place', $place);
+    $stmt->bindParam(':city', $city);
+    $stmt->bindParam(':description', $description);
+    $stmt->bindParam(':img', $img);
+    $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':time', $time);
+    $done = $stmt->execute();
+    $pdo = null;
+    return $done;
+}
+
+function deleteEvent($eventID, $userID)
+{
+    db_connect();
+    global $pdo;
+    $sql = "DELETE FROM `events` WHERE id=$eventID and creatorID=$userID";
+    $done = $pdo->exec($sql);
+    $last_id = $pdo->lastInsertId();
+    $pdo = null;
+    return $done;
+}
+
+//----------------------------------------------------GET SINGLE EVENT
+function getEventByID($eventID)
+{
+    db_connect();
+    global $pdo;
+    $sql = "SELECT * FROM events WHERE id=$eventID";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $data = $stmt->fetch();
+    $creatorID = $data['creatorID'];
+    $dpo = null;
+    $creator = getOriansator($creatorID);
+    $data += $creator;
+    return $data;
+}
+
+//---------------------------------------------------------GET EVENT ORGATISATOR FISTANAME AND LASTNAME
+function getOriansator($creatorID)
+{
+    db_connect();
+    global $pdo;
+    $stmt = $pdo->query("SELECT firstname, lastname FROM users WHERE id=$creatorID");
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $data = $stmt->fetch();
+    return $data;
+}
+
+//-------------------------------------------------------------ADD USER TO AN EVENT
+
+function addToEvent($eventID, $userID)
+{
+    db_connect();
+    global $pdo;
+    $pdo->exec("INSERT INTO `subs` (`eventID`, `userID`) VALUES ($eventID, $userID)");
+    $last_id = $pdo->lastInsertId();
+    $pdo->exec("UPDATE `events` SET `subscribed` = `subscribed`+1 WHERE `id`=$eventID");
+    $pdo = null;
+    return $last_id;
+}
+
+//------------------------------------------------------------UNSUBSCRIBE FORM EVENT
+function unsubscribeEvent($eventID, $userID)
+{
+    db_connect();
+    global $pdo;
+    $sql = "DELETE FROM `subs` WHERE eventID=$eventID and userID=$userID";
+    $pdo->exec($sql);
+    $last_id = $pdo->lastInsertId();
+    $pdo->exec("UPDATE `events` SET `subscribed` = `subscribed`-1 WHERE `id`=$eventID");
+    $pdo = null;
+    return $last_id;
+}
+
+//--------------------------------------------------------CHECK IF USER ON EVENT
+function checkUserInEvent($eventID, $userID)
+{
+    db_connect();
+    global $pdo;
+    $data = $pdo->query("SELECT id FROM `subs` WHERE `eventID`= $eventID and `userID`=$userID")->fetchAll(PDO::FETCH_ASSOC);
+    $dpo = null;
+    return $data;
 }

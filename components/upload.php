@@ -4,7 +4,6 @@ function imgFileUpload()
     if (empty($_FILES['fileToUpload']['name'])) {
         return 'profile.png';
     }
-
     $error = 0;
     $target_dir = "../public/uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -23,7 +22,7 @@ function imgFileUpload()
     }
 
     // Check file size
-    if ($_FILES["fileToUpload"]["size"] > 3000000) {
+    if ($_FILES["fileToUpload"]["size"] > 500000) {
         $error = "file is too large.";
         $uploadOk = 0;
     }

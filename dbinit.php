@@ -58,7 +58,8 @@ function create_table_events()
     `img` VARCHAR(50) NULL DEFAULT NULL,
     `active` BOOLEAN NOT NULL DEFAULT 1,
     `postDate` DATE NULL DEFAULT NULL,
-    `startTime` DATETIME NULL DEFAULT NULL,
+    `date` DATE NULL DEFAULT NULL,
+    `time` TIME NULL DEFAULT NULL,
     `subscribed` INT(2) DEFAULT 0
 
     )";
@@ -86,4 +87,3 @@ function create_table_sub()
 
 create_table_users();
 create_table_events();
-create_table_sub();
