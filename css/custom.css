@@ -5,3 +5,11 @@
   width: 80px;
   height: 80px;
 }
+
+.card-desc {
+  min-height: 120px;
+}
+
+.card {
+  min-height: 530px;
+}

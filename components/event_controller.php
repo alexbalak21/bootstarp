@@ -4,7 +4,9 @@ if (isset($_GET['id'])) {
     //--------------------------HYDRATE LA PAGE EVENT
     $eventID = $_GET['id'];
     $event = getEventByID($eventID);
+    $creatorID = $event['creatorID'];
     $name = $event['name'];
+    $img = $event['img'];
     $postDate = toFrDate($event['postDate']);
     $date = $event['date'];
     $frDate = toFrDate($date);
@@ -12,6 +14,12 @@ if (isset($_GET['id'])) {
     $firstname = $event['firstname'];
     $lastname = $event['lastname'];
     $button = '';
+    $link = "?page=user&id=$creatorID";
+    $activateButton = "<button class='btn btn-success btn-lg' type='submit' name='activateEvent'>Activer</button>";
+    if ($event['active']) {
+        $activateButton = "<button class='btn btn-secondary btn-lg' type='submit' name='activateEvent'>Désactiver</button>";
+    }
+
     if (isset($_COOKIE['user'])) {
         $USER = json_decode($_COOKIE['user'], true);
         $userID = $USER['id'];

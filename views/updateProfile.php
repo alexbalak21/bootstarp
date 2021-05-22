@@ -1,10 +1,10 @@
 <?php
 if (isset($_COOKIE['user'])) {
     $USER = json_decode($_COOKIE['user'], true);
+    require_once "blocks/deleteUserModal.php";
 } else {
     header("Location: index.php");
 }
-print_r($USER);
 ?>
 
 
@@ -38,11 +38,16 @@ print_r($USER);
         <label class="form-label">Confirmez le Mot de pass:</label>
         <input type="password" name="password2" class="form-control"/>
       </div>
-    <div class="col-md-12 text-center">
-      <button class="btn btn-primary" type="submit" name="updateUser">Mettre à Jour</button>
+    <div class="col-12 d-flex justify-content-end">
+      <button class="btn-lg btn-primary" type="submit" name="updateUser">Mettre à Jour</button>
     </div>
   </form>
+
+<button class="btn btn-danger" data-bs-toggle='modal' data-bs-target="#deleteUserModal">Suprimer</button>
+
+
 </main>
+
 
 <script>
 document.getElementById('formLogo').addEventListener('click', () => {

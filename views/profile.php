@@ -1,18 +1,14 @@
 <?php
-if (isset($_COOKIE['user'])) {
-    $USER = json_decode($_COOKIE['user'], true);
-} else {
-    header("Location: index.php");
-}
+require_once "components/profile_controller.php";
 ?>
 <main class="mt-4 container">
   <div class="row">
     <div class="col-12 row border">
     <h1 class="text-center my-4 col-12">Profile</h1>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <a href="#!"><img class="card-img-top" src="public/uploads/<?=$USER['img'] ?>" alt="..." /></a>
     </div>
-    <div class="col-md-8 text-center py-5">
+    <div class="col-md-9 text-center py-5">
       <h2><?=$USER['firstname'] ?></h2>
       <br />
       <h2><?=$USER['lastname'] ?></h2>
@@ -24,14 +20,22 @@ if (isset($_COOKIE['user'])) {
     </div>
     </div>
     </div>
-    <div class="my-5 mx-auto">
-      <div class="py-3 row">
-        <h2 class="px-4">Vos activitées à venir: 12</h2>
-        <button type="button" class="btn-lg btn-primary">Voir</button>
+    <div class="col-12 row text-center">
+    <div class="my-5">
+      <div class="py-3 row ">
+        <h2 class="px-4 col-lg-5">Vos activitées à venir:</h2>
+        <a class="col-lg-2" href="?page=eventsTable&userID=<?=$userID ?>"><h2><?=$MyEvents ?></h2>
+        <div class="col-lg-2">
+        <a class="col-lg-2" href="?page=eventsTable&userID=<?=$userID ?>"><button type="button" class="btn-lg btn-primary">Voir</button></a>
+        </div>
       </div>
-      <div class="py-3 row">
-        <h2 class="px-4">Participations à venir: 19</h2>
+      <div class="py-3 row ">
+        <h2 class="px-4 col-lg-5">Vos activitées à participées:</h2>
+        <a class="col-lg-2" href=""><h2><?=$participatingEvents ?></h2></a>
+        <div class="col-lg-2">
         <button type="button" class="btn-lg btn-primary">Voir</button>
+        </div>
+      </div>
       </div>
       </div>
     </div>

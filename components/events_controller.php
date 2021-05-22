@@ -5,6 +5,7 @@ foreach ($events as $event) {
     $date = $event['date'];
     $description = $event['description'];
     $img = $event['img'];
-    $id = $event['id'];
+    $eventID = $event['id'];
+    $creatorID = $event['creatorID'];
     require "blocks/card.php";
 }

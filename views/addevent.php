@@ -8,7 +8,7 @@ if (isset($_COOKIE['user'])) {
 <main class="container my-5">
   <h2 class="text-center">Ajouter un evenement:</h2>
   <form
-    class="row g-3 needs-validation"
+    class="row g-3 needs-validation d-flex justify-content-center"
     name="addEventForm"
     enctype="multipart/form-data"
     action="components/controller.php"

@@ -9,20 +9,22 @@ if (isset($_COOKIE['user'])) {
 ?>
 
 <main class="container my-5">
+
   <h2 class="text-center">Mettre à jour un evenement:</h2>
   <form
-    class="row g-3 needs-validation"
+    class="row d-flex justify-content-center needs-validation"
     name="addEventForm"
     enctype="multipart/form-data"
     action="components/controller.php"
     method="POST"
     novalidate
   >
-    <div class="col-md-12">
-    <img class="mb-4" src="assets/calendar2-event.svg" alt="eventIMG"/>
-    </div>
+  <img class="col-12 mb-4" src="assets/calendar2-event.svg" alt="caledar-logo" width="72" height="57" />
 
+
+    <input type="hidden" name="img" value="<?=$img ?>">
     <input type="file" name="fileToUpload" class="form-control-file" />
+
 
     <div class="col-md-8 py-2 text-center">
       <label class="form-label">Nom de l'evenment:</label>
@@ -61,8 +63,15 @@ if (isset($_COOKIE['user'])) {
     </div>
     <div class="col-md-8 text-center">
       <button class="btn btn-primary btn-lg" type="submit" name="updateEvent">Mettre à Jour</button>
-      <button class="btn btn-secondary btn-lg" type="submit" name="updateEvent">Desactiver</button>
-      <button class="btn btn-danger btn-lg" type="submit" name="deleteEvent">Suprimer</button>
+      <?=$activateButton ?>
     </div>
+    <?php
+require "blocks/eventModal.php";
+
+?>
   </form>
+  <div class="text-center py-5">
+  <button class="col-2 btn btn-danger btn-lg" data-bs-toggle='modal' data-bs-target="#eventDeleteModal">Suprimer</button>
+  </div>
+
 </main>

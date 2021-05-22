@@ -19,7 +19,7 @@ function db_connect()
     }
 }
 
-// CREATE USER
+//--------------------------------------------------------------------------------------CREATE USER
 function registerUser($email, $firstname, $lastname, $password, $img = "profile.png")
 {
     $passHash = password_hash($password, PASSWORD_DEFAULT);
@@ -39,7 +39,7 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
     return $last_id;
 }
 
-//--------------UPDATE USER
+//--------------------------------------------------------------------------------UPDATE USER
 
 function updateUser($userID, $email, $firstname, $lastname, $password, $img)
 {
@@ -62,7 +62,7 @@ function updateUser($userID, $email, $firstname, $lastname, $password, $img)
     return $updateDone;
 }
 
-//CHECK USER LOGIN
+//--------------------------------------------------------------------------CHECK USER LOGIN
 function checkUserPass($email, $password)
 {
     db_connect();
@@ -104,7 +104,7 @@ function addProduct($userID, $name, $category, $price, $description, $img = 'por
     $pdo = null;
     return $last_id;
 }
-
+//--------------------------------------------------------------------GET ALL EVENTS
 function getAll($table = 'events')
 {
     db_connect();
@@ -117,7 +117,21 @@ function getAll($table = 'events')
     $dpo = null;
     return $data;
 }
-//-----------------------------------------ADD EVENT
+
+//--------------------------------------------------------------------GET ALL EVENTS OF USER
+function getAllEventsOfUser($userID)
+{
+    db_connect();
+    global $pdo;
+    $sql = sprintf("SELECT * FROM events WHERE creatorID=$userID");
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $data = $stmt->fetchAll();
+    $dpo = null;
+    return $data;
+}
+//------------------------------------------------------------------------------------ADD EVENT
 function addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img = 'default.png')
 {
     db_connect();
@@ -156,6 +170,21 @@ function updateEvent($eventID, $name, $category, $place, $city, $description, $d
     return $done;
 }
 
+//--------------------------------------------------------------------ACTIVATE / DEACTIVATE EVENT
+function activateEvent($eventID, $userID)
+{
+    db_connect();
+    global $pdo;
+    $active = $pdo->query("SELECT active FROM events WHERE id = $eventID and creatorID = $userID")->fetchColumn();
+    if ($active) {
+        $pdo->exec("UPDATE `events` SET `active` = 0 WHERE `id`=$eventID and creatorID = $userID");
+    } else {
+        $pdo->exec("UPDATE `events` SET `active` = 1 WHERE `id`=$eventID and creatorID = $userID");
+    }
+    $active = $pdo->query("SELECT active FROM events WHERE id = $eventID and creatorID = $userID")->fetchColumn();
+    return $active;
+}
+//-----------------------------------------------------------DELETE EVENT
 function deleteEvent($eventID, $userID)
 {
     db_connect();
@@ -229,4 +258,58 @@ function checkUserInEvent($eventID, $userID)
     $data = $pdo->query("SELECT id FROM `subs` WHERE `eventID`= $eventID and `userID`=$userID")->fetchAll(PDO::FETCH_ASSOC);
     $dpo = null;
     return $data;
+}
+
+function getAllUsersParticipatingEvets($userID)
+{
+    db_connect();
+    global $pdo;
+    $data = $pdo->query("SELECT id FROM `subs` WHERE `userID`= $userID")->fetchAll(PDO::FETCH_ASSOC);
+    $dpo = null;
+    return $data;
+}
+//----------------------------------------------------DELETE USER
+function deleteUser($userID, $password)
+{
+    db_connect();
+    global $pdo;
+    $passHash = $pdo->query("SELECT `password` FROM users WHERE id = $userID")->fetchColumn();
+    if (password_verify($password, $passHash)) {
+        $done = $pdo->exec("DELETE FROM `users` WHERE id= $userID");
+        echo $done;
+    }
+    return $done;
+}
+
+//-----------------------------USERS ON EVENT
+function usersOnEvent($eventID)
+{
+    db_connect();
+    global $pdo;
+    $subs = $pdo->query("SELECT * FROM `subs` WHERE eventID = $eventID")->fetchAll(PDO::FETCH_ASSOC);
+    $row = [];
+    $eventUsers = [];
+    $users = $pdo->query("SELECT  id, firstname, lastname FROM `users`")->fetchAll(PDO::FETCH_ASSOC);
+    $usersByID = [];
+    foreach ($users as $user) {
+        $usersByID[$user['id']] = $user['firstname'] . ' ' . $user['lastname'];
+    }
+    $users = [];
+    foreach ($subs as $sub) {
+        $users[$sub['userID']] = [];
+        $users[$sub['userID']]['name'] = $usersByID[$sub['userID']];
+        $users[$sub['userID']]['date'] = substr($sub['subTime'], 0, 10);
+    }
+    $pdo = null;
+    return $users;
+}
+
+//----------------------GET USER BY ID
+
+function getUserByID($userID)
+{
+    db_connect();
+    global $pdo;
+    $user = $pdo->query("SELECT firstname, lastname, email, img FROM `users` WHERE id = $userID")->fetch(PDO::FETCH_ASSOC);
+    return $user;
 }

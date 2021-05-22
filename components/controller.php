@@ -1,7 +1,7 @@
 <?php
 require_once "model.php";
 require_once "upload.php";
-
+// require_once "dev.php";
 //-----------------------------------------------REGISTER
 if (isset($_POST['register'])) {
     $img = 'profile.png';
@@ -32,16 +32,17 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
     $result = checkUserPass($email, $password);
     if ($result == 'NOUSER') {
-        header("Location: ../index.php?page=login&error=NOUSER");
+        header("Location: ../index.php?page=login&error=Utilisatuer Inconu !");
     }
 
     if ($result == 'WRONGPASS') {
-        header("Location: ../index.php?page=login&error=WRONGPASS");
+        header("Location: ../index.php?page=login&error=Mod de pass Incorect !");
     }
     if ($result['connected'] == 'TRUE') {
         array_pop($result);
         $data = json_encode($result, true);
         set_cookie('user', $data, 14);
+        set_cookie('userID', $result['id'], 14);
         header("Location: ../index.php?page=profile");
     }
 }
@@ -89,7 +90,7 @@ if (isset($_POST['updateEvent'])) {
         header("Location: index.php");
     }
     $userID = $USER['id'];
-    $img = 'default.png';
+    $img = $_POST['img'];
     if (!empty($_FILES['fileToUpload']['name'])) {
         $error = imgFileUpload();
         if ($error == 0) {
@@ -122,6 +123,23 @@ if (isset($_GET['admin'])) {
         echo "TETS";
     }
 }
+//------------------------------------------------------------------------ACTIVATE / DEACTIVATE EVENT
+if (isset($_POST['activateEvent'])) {
+    if (isset($_COOKIE['user'])) {
+        $USER = json_decode($_COOKIE['user'], true);
+    } else {
+        header("Location: index.php");
+    }
+    $eventID = $_POST['id'];
+    $userID = $USER['id'];
+    $active = activateEvent($eventID, $userID);
+    if (isset($_POST['table'])) {
+        header("Location: ../?page=eventsTable&userID=$userID");
+    } else {
+        header("Location: ../?page=updateEvent&id=$eventID");
+    }
+}
+
 //-------------------------------------------UPDATE USER
 if (isset($_POST['updateUser'])) {
     if (isset($_COOKIE['user'])) {
@@ -160,6 +178,49 @@ if (isset($_POST['deleteEvent'])) {
     }
     $eventID = $_POST['id'];
     $done = deleteEvent($eventID, $USER['id']);
-    var_dump($done);
-    die;
+    if ($done) {
+        header("Location:../?page=events&message=DELETED");
+    } else {
+        header("Location:../?page=events&message=ERROR DELETING");
+    }
+}
+//-------------------------------------------------DELETE USER
+if (isset($_POST['deleteUser'])) {
+    if (isset($_COOKIE['user'])) {
+        $USER = json_decode($_COOKIE['user'], true);
+    } else {
+        header("Location: index.php");
+    }
+    $userID = $USER['id'];
+    $password = $_POST['password'];
+    $done = deleteUser($userID, $password);
+    if ($done) {
+        setcookie('user', null, -1, '/');
+        unset($_COOKIE['user']);
+        header("Location: ../index.php?message=UserDeleted");
+    } else {
+        header("Location: ../index.php?message=ErrorDeleting");
+    }
+}
+
+//-------------------------------SUBSCRIBE / UNSUBSCRIBE ON EVENT
+if (isset($_POST['subscribe'])) {
+    $eventID = $_POST['eventID'];
+    $userID = $_POST['subscribe'];
+    $subID = addToEvent($eventID, $userID);
+    header("Location:../?page=event&id=$eventID");
+}
+
+if (isset($_POST['unsubscribe'])) {
+    $eventID = $_POST['eventID'];
+    $userID = $_POST['unsubscribe'];
+    $unsubID = unsubscribeEvent($eventID, $userID);
+    echo $unsubID;
+    header("Location:../?page=event&id=$eventID");
+}
+
+//-----------------------------------SHOW EVENT UPDATE FORM
+if (isset($_POST['manage'])) {
+    $eventID = $_POST['eventID'];
+    header("Location:../?page=updateEvent&id=$eventID");
 }
