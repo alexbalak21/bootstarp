@@ -171,7 +171,7 @@ function updateEvent($eventID, $name, $category, $place, $city, $description, $d
 }
 
 //--------------------------------------------------------------------ACTIVATE / DEACTIVATE EVENT
-function activateEvent($eventID, $userID)
+function activDeactivEvent($eventID, $userID)
 {
     db_connect();
     global $pdo;
@@ -347,11 +347,38 @@ function deactivateUser($id)
     $done = $pdo->exec("UPDATE `users` SET `activated` = 0 WHERE `id`=$id");
     return $done;
 }
-
+//----------------------------------------------ADMIN DELETE USER
 function sudoDeleteUser($id)
 {
     db_connect();
     global $pdo;
     $done = $pdo->exec("DELETE FROM `users` WHERE `id` = $id");
+    return $done;
+}
+
+//--------------------------------------------ADMIN ACTIVATE EVENT
+function activateEvent($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `events` SET `active` = 1 WHERE `id`=$id");
+    return $done;
+}
+
+//------------------------------------------------DEACTIVATE EVENT
+function deactivateEvent($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `events` SET `active` = 0 WHERE `id`=$id");
+    return $done;
+}
+
+//------------------------------------------------ADMIN DELETE EVENT
+function sudoDeleteEvent($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("DELETE FROM `events` WHERE `id` = $id");
     return $done;
 }

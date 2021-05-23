@@ -132,7 +132,7 @@ if (isset($_POST['activateEvent'])) {
     }
     $eventID = $_POST['id'];
     $userID = $USER['id'];
-    $active = activateEvent($eventID, $userID);
+    $active = activDeactivEvent($eventID, $userID);
     if (isset($_POST['table'])) {
         header("Location: ../?page=eventsTable&userID=$userID");
     } else {
@@ -265,6 +265,25 @@ if (isset($_GET['cmd'])) {
             header("Location: ../idex.php&message=Erreur Desactivation ");
         }
     }
+
+    //------------------------------ACTIVATE EVENT
+    if ($cmd == 'activateEvent') {
+        $id = $_GET['event'];
+        $done = activateEvent($id);
+        if ($done) {
+            header("Location: ../../?page=eventList");
+        }
+    }
+
+//---------------------------------DEACTIVATE EVENT
+    if ($cmd == 'deactivateEvent') {
+        $id = $_GET['event'];
+        $done = deactivateEvent($id);
+        if ($done) {
+            header("Location: ../../?page=eventList");
+        }
+    }
+
 }
 
 //--------------------------------------ADMIN DELETE USER
@@ -275,7 +294,19 @@ if (isset($_POST['confirmDeleteUser'])) {
         if (sudoDeleteUser($id)) {
             header("Location: ../?page=usersList&message=Utilisateur $id Suprimé !");
         } else {
-            header("Location: ../idex.php&message=Erreur Suppression");
+            header("Location: ../idex.php&message=Erreur Suppression Utilisateur");
+        }
+    }
+}
+//-------------------------------------------ADMIN DELETE EVENT
+if (isset($_POST['confirmDeleteEvent'])) {
+    $adminID = $_POST['adminID'];
+    $id = $_POST['eventToDelete'];
+    if ($adminID == 99) {
+        if (sudoDeleteEvent($id)) {
+            header("Location: ../?page=eventList&message=Evenment $id Suprimé !");
+        } else {
+            header("Location: ../idex.php&message=Erreur Suppression Evenment");
         }
     }
 }
