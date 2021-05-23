@@ -13,3 +13,7 @@
 .card {
   min-height: 530px;
 }
+.tab-img {
+  height: 40px;
+  width: 40px;
+}
