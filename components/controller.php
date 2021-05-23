@@ -2,7 +2,7 @@
 require_once "model.php";
 require_once "upload.php";
 // require_once "dev.php";
-//-----------------------------------------------REGISTER
+// -----------------------------------------------REGISTER
 if (isset($_POST['register'])) {
     $img = 'profile.png';
     if (!empty($_FILES['fileToUpload']['name'])) {
@@ -223,4 +223,59 @@ if (isset($_POST['unsubscribe'])) {
 if (isset($_POST['manage'])) {
     $eventID = $_POST['eventID'];
     header("Location:../?page=updateEvent&id=$eventID");
+}
+
+//----------------------------------------VALIDATE
+
+if (isset($_GET['cmd'])) {
+    $cmd = $_GET['cmd'];
+    if ($cmd == 'vaildMail') {
+        $id = $_GET['user'];
+        $done = validMail($id);
+        if ($done) {
+            header("Location: ../../?page=usersList");
+        }
+    }
+}
+//----------------------------------------------UNVALIDATE MAIL
+if (isset($_GET['cmd'])) {
+    $cmd = $_GET['cmd'];
+    if ($cmd == 'invalidMail') {
+        $id = $_GET['user'];
+        $done = invalidMail($id);
+        if ($done) {
+            header("Location: ../../?page=usersList");
+        }
+    }
+    //-------------------------------------------ACTIVATE USER
+    if ($cmd == 'activateUser') {
+        $id = $_GET['user'];
+        $done = activateUser($id);
+        if ($done) {
+            header("Location: ../../?page=usersList");
+        }
+    }
+    //---------------------------------------------DEACTIVATE USER
+    if ($cmd == 'deactivateUser') {
+        $id = $_GET['user'];
+        $done = deactivateUser($id);
+        if ($done) {
+            header("Location: ../../?page=usersList");
+        } else {
+            header("Location: ../idex.php&message=Erreur Desactivation ");
+        }
+    }
+}
+
+//--------------------------------------ADMIN DELETE USER
+if (isset($_POST['confirmDeleteUser'])) {
+    $adminID = $_POST['adminID'];
+    $id = $_POST['userToDelete'];
+    if ($adminID == 99) {
+        if (sudoDeleteUser($id)) {
+            header("Location: ../?page=usersList&message=Utilisateur $id Suprimé !");
+        } else {
+            header("Location: ../idex.php&message=Erreur Suppression");
+        }
+    }
 }

@@ -304,7 +304,7 @@ function usersOnEvent($eventID)
     return $users;
 }
 
-//----------------------GET USER BY ID
+//------------------------------------------GET USER BY ID
 
 function getUserByID($userID)
 {
@@ -312,4 +312,46 @@ function getUserByID($userID)
     global $pdo;
     $user = $pdo->query("SELECT firstname, lastname, email, img FROM `users` WHERE id = $userID")->fetch(PDO::FETCH_ASSOC);
     return $user;
+}
+
+//------------------------------------------------VALID
+
+function validMail($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `users` SET `validated` = 1 WHERE `id`=$id");
+    return $done;
+}
+//----------------------------------------UNVALID MAIL
+function invalidMail($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `users` SET `validated` = 0 WHERE `id`=$id");
+    return $done;
+}
+//---------------------------------------ACTIVATE USER
+function activateUser($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `users` SET `activated` = 1 WHERE `id`=$id");
+    return $done;
+}
+//----------------------------------------DEACTIVATE USER
+function deactivateUser($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `users` SET `activated` = 0 WHERE `id`=$id");
+    return $done;
+}
+
+function sudoDeleteUser($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("DELETE FROM `users` WHERE `id` = $id");
+    return $done;
 }

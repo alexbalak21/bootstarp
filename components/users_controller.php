@@ -6,19 +6,22 @@ if (isset($_COOKIE['userID'])) {
     if (!($_COOKIE['userID'] == 99 && $USER['email'] == 'admin@gmail.com')) {
         header("Location: index.php");
     } else {
+        $adminID = $_COOKIE['userID'];
         $users = getAll('users');
         foreach ($users as $user) {
+            $id = $user['id'];
+            require "blocks/delleteUserConfirm.php";
             if ($user['validated']) {
-                $valid = "<button class='btn btn-primary'>Enlever</button>";
+                $valid = "<a href='components/controller.php/?cmd=invalidMail&user=$id'><button class='btn btn-secondary'>Invalider</button></a>";
             } else {
-                $valid = "<button class='btn btn-primary'>Valider</button>";
+                $valid = "<a href='components/controller.php/?cmd=vaildMail&user=$id'><button class='btn btn-success'>Valider</button></a>";
             }
             if ($user['activated']) {
-                $activ = "<button class='btn btn-secondary'>Desactiver</button>";
+                $activ = "<a href='components/controller.php/?cmd=deactivateUser&user=$id'><button class='btn btn-secondary'>Desactiver</button></a>";
             } else {
-                $activ = "<button class='btn btn-success'>Activer</button>";
+                $activ = "<a href='components/controller.php/?cmd=activateUser&user=$id'><button class='btn btn-success'>Activer</button></a>";
             }
-            $actions = "<button class='btn btn-danger'>Supprimer</button>";
+            $actions = "<button class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteUserConfirm$id'>Suprimer</button>";
             $img = $user['img'];
             require "blocks/usersRow.php";
         }
