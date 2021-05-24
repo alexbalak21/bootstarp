@@ -22,8 +22,6 @@ require_once "components/router.php";
   <?php
 require_once "blocks/navbar.php";
 require_once "blocks/header.php";
-$link = sendValidation(26);
-echo $link;
 require_once "views/$page.php";
 require_once "blocks/footer.php";
 require_once "blocks/modals/message.php";

@@ -43,9 +43,15 @@ if ($userID) {
 
 ?>
 
+
+
+
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top py-2" id="mainNav">
       <div class="container-fluid px-3 px-lg-5">
-        <a class="navbar-brand" href="?page=events#main">EventBright</a>
+      <a class="navbar-brand" href="#">
+            <img src="assets/logo.png" alt="logo" width="35" height="35" class="d-inline-block align-text-top">
+            EventBright
+        </a>
         <button
           class="navbar-toggler navbar-toggler-right"
           type="button"
