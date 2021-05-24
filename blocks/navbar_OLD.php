@@ -33,8 +33,9 @@
 
         <li class='nav-item'><a class='nav-link' href='?page=event&nbr=1'>Event</a></li>
         <li class='nav-item'><a class='nav-link' href='?page=usersList'>USER LIST</a></li>
-        <li class='nav-item'><a class='nav-link' href='?page=eventList'>EVENT LIST</a></li>
+
         <li class='nav-item ml-auto'><a class='nav-link' href='?page=userSubEvntsTable&id=103'>USER SUB EVENTS</a></li>
+
 
       </ul>
     </div>

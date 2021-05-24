@@ -294,15 +294,11 @@ function deleteUser($userID, $password)
             $delete = unlink("../public/uploads/$userImg");
         }
         deleteEventsOfUser($userID);
+        updateSubsCount();
     }
+    updateSubsCount();
     $pdo = null;
     return $done;
-}
-
-//-----------------------------------------------DELETE USER PROFILE IMG
-function deleteUserProfileImg($userID)
-{
-
 }
 
 //-----------------------------USERS ON EVENT
@@ -381,6 +377,7 @@ function sudoDeleteUser($id)
     global $pdo;
     $done = $pdo->exec("DELETE FROM `users` WHERE `id` = $id");
     deleteEventsOfUser($userID);
+    updateSubsCount();
     $pdo = null;
     return $done;
 }
@@ -408,8 +405,12 @@ function sudoDeleteEvent($id)
 {
     db_connect();
     global $pdo;
+    $eventIMG = $pdo->query("SELECT `img` FROM events WHERE id = $id")->fetchColumn();
     $done = $pdo->exec("DELETE FROM `events` WHERE `id` = $id");
     $del = $pdo->exec("DELETE FROM `subs` WHERE `eventID` = $id");
+    if ($eventIMG != 'default.png') {
+        $delete = unlink("../public/uploads/$userImg");
+    }
     return $done;
 }
 //--------------------------------------------------------------UPADATE TOKEN ON LOGIN
@@ -479,4 +480,61 @@ function allParticipateEvents($userID)
         $subEvents[$key]['names'] = $firstLastName = getOriansator($creator);
     }
     return $subEvents;
+}
+
+//----------------------------GET ALL SUBS
+function getAllSubs()
+{
+    $allSubs = getAll('subs');
+    db_connect();
+    global $pdo;
+    $subs = $allSubs;
+    foreach ($allSubs as $key => $sub) {
+        $subID = $sub['userID'];
+        $names = $pdo->query("SELECT firstname, lastname FROM `users` WHERE id = $subID")->fetchAll(PDO::FETCH_ASSOC);
+        $names = $names[0];
+        $names = implode(" ", $names);
+        $subs[$key]['names'] = $names;
+        $eventID = $sub['eventID'];
+        $eventName = $pdo->query("SELECT `name` FROM `events` WHERE id = $eventID")->fetchColumn();
+        $subs[$key]['eventName'] = $eventName;
+    }
+    return $subs;
+}
+
+//------------------------------------------------------DELETE SUBSCRIPTION
+function delSub($subID)
+{
+    db_connect();
+    global $pdo;
+    $del = $pdo->exec("DELETE FROM `subs` WHERE `id`=$subID");
+    var_dump($del);
+    updateSubsCount();
+    $pdo = null;
+    return $del;
+}
+
+function updateSubsCount()
+{
+    db_connect();
+    global $pdo;
+    $events = $pdo->query("SELECT `id` FROM `events`")->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($events as $event) {
+        $eventID = $event['id'];
+        $subs = $pdo->query("SELECT `id` FROM `subs` WHERE eventID = $eventID")->fetchAll(PDO::FETCH_ASSOC);
+        $count = count($subs);
+        $done = $pdo->exec("UPDATE `events` SET `subscribed` = $count WHERE `id`=$eventID");
+        $pdo = null;
+        return null;
+    }
+}
+
+function subsCount($eventID)
+{
+    db_connect();
+    global $pdo;
+    $subs = $pdo->query("SELECT `id` FROM `subs` WHERE eventID = $eventID")->fetchAll(PDO::FETCH_ASSOC);
+    $count = count($subs);
+    return $count;
+
 }

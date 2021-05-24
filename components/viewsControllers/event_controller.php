@@ -7,6 +7,7 @@ if (isset($_GET['id'])) {
     $eventID = $_GET['id'];
     $event = getEventByID($eventID);
     $creatorID = $event['creatorID'];
+    $count = subsCount($eventID);
     $name = $event['name'];
     $img = $event['img'];
     $postDate = toFrDate($event['postDate']);

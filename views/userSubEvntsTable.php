@@ -1,5 +1,5 @@
-<main class="mt-4 container">
-<h2 class="text-center my-4">TABLE DES INSCRIPTIONS EVNMENTS</h2>
+<main id='main' class="mt-4 container">
+<h2 class="text-center my-4">TABLE DES PARTICPIATIONS EVNMENTS</h2>
 <table class="table text-center">
 <tr>
 <th>Date</th>

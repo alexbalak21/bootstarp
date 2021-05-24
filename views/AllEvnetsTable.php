@@ -1,4 +1,4 @@
-<main class="mt-4 container-fluid">
+<main id='main' class="mt-4 container-fluid">
 <h1 class="text-center my-4">TABLE DES EVENMENTS</h1>
 <table class="table text-center table-striped">
     <tr>

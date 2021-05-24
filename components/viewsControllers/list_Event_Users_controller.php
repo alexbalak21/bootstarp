@@ -1,14 +1,14 @@
 <?php
-require_once "components/checkLogin.php";
+require_once "components/convert.php";
 $users = usersOnEvent($eventID);
 foreach ($users as $subID => $user) {
     $name = $user['name'];
-    $date = $user['date'];
+    $date = toFrDate($user['date']);
     $link = "?page=user&id=$subID";
     echo "
 <tr>
-<td>$date</td>
 <td><a href='$link'>$name</a></td>
+<td>$date</td>
 </tr>
 ";
 }

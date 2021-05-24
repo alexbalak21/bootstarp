@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1" id="deleteUserConfirm<?=$id ?>">
+<div class="modal" tabindex="-1" id="deleteUserConfirm<?=$eventID ?>">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,8 +9,7 @@
       <div class="modal-body text-center">
           <h3 class="text-danger">Supprimer ce Compte:</h3>
           <form action="components/controller.php" method="POST">
-          <input type="hidden" name="userToDelete" value="<?=$id ?>">
-          <input type="hidden" name="adminID" value="<?=$adminID ?>">
+          <input type="hidden" name="userToDelete" value="<?=$eventID ?>">
         <div class="py-3">
         <button class="btn btn-danger btn-lg" type="submit" name="confirmDeleteUser">Suprimer</button>
         <button class="btn btn-primary btn-lg" type="button" data-bs-dismiss="modal">Annuler</button>
@@ -20,4 +19,3 @@
       </div>
     </div>
   </div>
-</div>

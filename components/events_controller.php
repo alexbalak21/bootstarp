@@ -1,7 +1,9 @@
 <?php
+$userID = checkConnect();
 require_once "components/convert.php";
 $events = getAll('events');
 foreach ($events as $event) {
+    $eventID = $event['id'];
     $name = $event['name'];
     $date = toFrDate($event['date']);
     $description = $event['description'];
@@ -9,8 +11,7 @@ foreach ($events as $event) {
     $eventID = $event['id'];
     $creatorID = $event['creatorID'];
     $button = "";
-    if (isset($_COOKIE['userID'])) {
-        $userID = $_COOKIE['userID'];
+    if ($userID) {
         $check = checkUserInEvent($eventID, $userID);
 //-----------------------------AFFICHE BOUTON PARTICIPER / SE DESINSCRIRE
         if ($check) {
@@ -23,7 +24,10 @@ foreach ($events as $event) {
         if ($creatorID == $userID) {
             $button = "<a href='index.php?page=updateEvent&id=$eventID'><button type='submit' class='m-4 position-absolute bottom-0 end-0 btn btn-success btn'>Gerer</button></a>";
         }
-
+    }
+    if ($userID == 1) {
+        require "blocks/eventDeleteConfirm.php";
+        $button = "<button class='btn btn-danger position-absolute bottom-0 end-0 m-4' data-bs-toggle='modal' data-bs-target='#deleteEventConfirm$eventID'>Suprimer</button>";
     }
 
     require "blocks/card.php";

@@ -3,7 +3,7 @@ require_once "components/viewsControllers/updateUser_controller.php";
 ?>
 
 
-<main class="container my-5">
+<main id='main' class="container my-5">
   <h2>Mettre à Jour son profil:</h2>
   <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" novalidate>
   <div class="col-12">

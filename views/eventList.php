@@ -1,5 +1,14 @@
+<?php
+$userID = checkConnect();
+if ($userID != 1) {
+    header("Location: index.php");
+}
 
-<main class="mt-4 container">
+?>
+
+
+
+<main id='main' class="mt-4 container">
 <h1 class="text-center my-4">TABLE DES EVENMENTS</h1>
 <table class="table text-center">
 <tr>

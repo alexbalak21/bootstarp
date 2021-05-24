@@ -1,7 +1,7 @@
 <?php
 require_once "components/user_controller.php";
 ?>
-<main class="mt-4 container">
+<main id='main' class="mt-4 container">
   <div class="row">
     <div class="col-12 row border">
     <h1 class="text-center my-4 col-12">Utilisatuer</h1>

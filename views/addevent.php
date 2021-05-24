@@ -3,7 +3,7 @@ require_once "components/viewsControllers/addEvent_controller.php";
 
 ?>
 
-<main class="container my-5">
+<main id='main' class="container my-5">
   <h2 class="text-center">Ajouter un evenement:</h2>
   <form
     class="row g-3 needs-validation d-flex justify-content-center"
@@ -13,9 +13,11 @@ require_once "components/viewsControllers/addEvent_controller.php";
     method="POST"
     novalidate
   >
-    <img class="col-12 mb-4" src="assets/calendar2-event.svg" alt="person LOGO" width="72" height="57" />
+  <div class="col-12 d-flex justify-content-center">
+    <img id="formLogo" class="col-12 mb-4" src="assets/image.svg" alt="image.svg" width="72" height="57" />
+  </div>
 
-    <input type="file" name="fileToUpload" class="form-control-file" />
+    <input id="fileUpload" type="file" name="fileToUpload" class="form-control-file" />
 
     <div class="col-md-8 py-2 text-center">
       <label class="form-label">Nom de l'evenment:</label>
@@ -56,3 +58,9 @@ require_once "components/viewsControllers/addEvent_controller.php";
     </div>
   </form>
 </main>
+
+<script>
+document.getElementById('formLogo').addEventListener('click', () => {
+  document.getElementById('fileUpload').click()
+})
+</script>

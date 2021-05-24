@@ -12,6 +12,6 @@ foreach ($events as $event) {
     $city = $event['city'];
     $place = $event['place'];
     $time = substr($event['time'], 0, 5);
-    $subs = $event['subscribed'];
+    $subs = subsCount($eventID);
     require "blocks/eventsTableRow.php";
 }

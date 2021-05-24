@@ -1,4 +1,4 @@
-<main class="container my-5">
+<main id='main' class="container my-5">
   <h2 class="text-center">S'inscrire:</h2>
   <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" novalidate>
   <div class="col-12 d-flex justify-content-center">
@@ -45,5 +45,4 @@
 document.getElementById('formLogo').addEventListener('click', () => {
   document.getElementById('fileUpload').click()
 })
-
 </script>

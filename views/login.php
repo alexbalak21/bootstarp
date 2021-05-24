@@ -1,7 +1,7 @@
 <?php
 require_once "components/login_controller.php";
 ?>
-<main class="container d-flex justify-content-center">
+<main id='main' class="container d-flex justify-content-center">
   <div class="form-signin text-center col-sm-8 col-md-6 col-lg-3 my-4">
     <form class="needs-validation" method="POST" action="components/controller.php" novalidate>
       <img class="mb-4" src="assets/person.svg" alt="person" width="57 " height="57" />

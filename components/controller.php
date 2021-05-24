@@ -156,6 +156,9 @@ if (isset($_POST['deleteUser'])) {
     if ($done) {
         setcookie('user', null, -1, '/');
         unset($_COOKIE['user']);
+        setcookie('token', null, -1, '/');
+        unset($_COOKIE['token']);
+        unset($_COOKIE['id']);
         header("Location: ../index.php?message=UserDeleted");
     } else {
         header("Location: ../index.php?message=ErrorDeleting");
@@ -184,72 +187,87 @@ if (isset($_POST['manage'])) {
     header("Location:../?page=updateEvent&id=$eventID");
 }
 
-//----------------------------------------VALIDATE
-
+//----------------------------------------------------------------------------ADMIN SECTION
 if (isset($_GET['cmd'])) {
-    $cmd = $_GET['cmd'];
-    if ($cmd == 'vaildMail') {
-        $id = $_GET['user'];
-        $done = validMail($id);
-        if ($done) {
-            header("Location: ../../?page=usersList");
-        }
-    }
-}
-//----------------------------------------------UNVALIDATE MAIL
-if (isset($_GET['cmd'])) {
-    $cmd = $_GET['cmd'];
-    if ($cmd == 'invalidMail') {
-        $id = $_GET['user'];
-        $done = invalidMail($id);
-        if ($done) {
-            header("Location: ../../?page=usersList");
-        }
-    }
-    //-------------------------------------------ACTIVATE USER
-    if ($cmd == 'activateUser') {
-        $id = $_GET['user'];
-        $done = activateUser($id);
-        if ($done) {
-            header("Location: ../../?page=usersList");
-        }
-    }
-    //---------------------------------------------DEACTIVATE USER
-    if ($cmd == 'deactivateUser') {
-        $id = $_GET['user'];
-        $done = deactivateUser($id);
-        if ($done) {
-            header("Location: ../../?page=usersList");
-        } else {
-            header("Location: ../idex.php&message=Erreur Desactivation ");
-        }
-    }
+    $userID = checkConnect();
+    if ($userID != 1) {
+        header("Location: ../index.php");
+    } else {
+        $cmd = $_GET['cmd'];
 
-    //------------------------------ACTIVATE EVENT
-    if ($cmd == 'activateEvent') {
-        $id = $_GET['event'];
-        $done = activateEvent($id);
-        if ($done) {
-            header("Location: ../../?page=eventList");
+        //--------------------------------------------------VALID MAIL
+        if ($cmd == 'vaildMail') {
+            $id = $_GET['user'];
+            $done = validMail($id);
+            if ($done) {
+                header("Location: ../../?page=usersList#main");
+            }
         }
-    }
+
+//-------------------------------------INVALD MAIL
+        if ($cmd == 'invalidMail') {
+            $id = $_GET['user'];
+            $done = invalidMail($id);
+            if ($done) {
+                header("Location: ../../?page=usersList#main");
+            }
+        }
+
+//------------------------------ACTIVATE EVENT
+        if ($cmd == 'activateEvent') {
+            $id = $_GET['event'];
+            $done = activateEvent($id);
+            if ($done) {
+                header("Location: ../../?page=eventList#main");
+            }
+        }
 
 //---------------------------------DEACTIVATE EVENT
-    if ($cmd == 'deactivateEvent') {
-        $id = $_GET['event'];
-        $done = deactivateEvent($id);
-        if ($done) {
-            header("Location: ../../?page=eventList");
+        if ($cmd == 'deactivateEvent') {
+            $id = $_GET['event'];
+            $done = deactivateEvent($id);
+            if ($done) {
+                header("Location: ../../?page=eventList#main");
+            }
         }
-    }
 
+//-------------------------------------------ACTIVATE USER
+        if ($cmd == 'activateUser') {
+            $id = $_GET['user'];
+            $done = activateUser($id);
+            if ($done) {
+                header("Location: ../../?page=usersList");
+            }
+        }
+//---------------------------------------------DEACTIVATE USER
+        if ($cmd == 'deactivateUser') {
+            $id = $_GET['user'];
+            $done = deactivateUser($id);
+            if ($done) {
+                header("Location: ../../?page=usersList");
+            } else {
+                header("Location: ../idex.php&message=Erreur Desactivation ");
+            }
+        }
+
+        //------------------------------------DELETE SUBSCRIPTION
+        if ($cmd == 'DelSub') {
+            $subID = $_GET['SubID'];
+            $done = delSub($subID);
+            if ($done) {
+                header("Location: ../index.php?page=subsTable#main");
+            }
+        }
+
+//-------------------------------------------END ADMIN GET ACTIONS
+    }
 }
 
 //--------------------------------------ADMIN DELETE USER
 if (isset($_POST['confirmDeleteUser'])) {
-    $adminID = $_POST['adminID'];
-    $id = $_POST['userToDelete'];
-    if ($adminID == 99) {
+    $userID = checkConnect();
+    if ($userID == 1) {
+        $id = $_POST['userToDelete'];
         if (sudoDeleteUser($id)) {
 
             header("Location: ../?page=usersList&message=Utilisateur $id Suprimé !");
@@ -260,9 +278,9 @@ if (isset($_POST['confirmDeleteUser'])) {
 }
 //-------------------------------------------ADMIN DELETE EVENT
 if (isset($_POST['confirmDeleteEvent'])) {
-    $adminID = $_POST['adminID'];
-    $id = $_POST['eventToDelete'];
-    if ($adminID == 99) {
+    $userID = checkConnect();
+    if ($userID == 1) {
+        $id = $_POST['eventToDelete'];
         if (sudoDeleteEvent($id)) {
             header("Location: ../?page=eventList&message=Evenment $id Suprimé !");
         } else {
