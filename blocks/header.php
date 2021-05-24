@@ -5,7 +5,7 @@
       <img src="assets/img/header.jpg" class="d-block w-100" alt="..." />
       <div class="carousel-caption">
         <h1 class="title">EventBright</h1>
-        <h3 class="my-5">Pour partager toutes vos activitées.</h3>
+        <h3 class="my-5 ">Pour partager toutes vos activitées.</h3>
 
 
       </div>
