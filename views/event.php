@@ -12,7 +12,10 @@ require_once "components/viewsControllers/event_controller.php";
   </div>
   <div class="col-lg-7">
   <div class="row">
-      <h3 class="col-6 py-2">Organisateur:<a href="<?=$link ?>"><?="$names" ?></a></h3>
+  <div class='col-6 py<i class="fas fa-wifi-2    "></i>'>
+      <h3>Organisateur:</h3> <br>
+      <h3 class="text-end"><a href="<?=$link ?>"><?="$names" ?></a></h3>
+  </div>
       <h4 class="col-6 text-end py-2">Publié le : <?="$postDate" ?> </h4>
          <h3 class="ms-2 py-4">Participants: <a href="?page=lestEventUsers&eventID=<?=$eventID ?>"><?=$count ?></a></h3>
          <div class="col-12">

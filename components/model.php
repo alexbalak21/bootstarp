@@ -418,7 +418,7 @@ function updateToken($id)
 {
     db_connect();
     global $pdo;
-    $token = substr(uniqid('', true), 6, 16);
+    $token = md5(rand(0, 1000));
     $hashToken = password_hash($token, PASSWORD_DEFAULT);
     $stmt = $pdo->prepare("UPDATE `users` SET `token` = :token WHERE `id`= $id");
     $stmt->bindParam(':token', $hashToken);
