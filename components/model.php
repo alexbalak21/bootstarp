@@ -191,7 +191,7 @@ function deleteEvent($eventID, $userID)
     global $pdo;
     $sql = "DELETE FROM `events` WHERE id=$eventID and creatorID=$userID";
     $done = $pdo->exec($sql);
-    $last_id = $pdo->lastInsertId();
+    $del = $pdo->exec("DELETE FROM `subs` WHERE `eventID` = $eventID");
     $pdo = null;
     return $done;
 }
@@ -288,10 +288,21 @@ function deleteUser($userID, $password)
     global $pdo;
     $passHash = $pdo->query("SELECT `password` FROM users WHERE id = $userID")->fetchColumn();
     if (password_verify($password, $passHash)) {
+        $userImg = $pdo->query("SELECT `img` FROM users WHERE id = $userID")->fetchColumn();
         $done = $pdo->exec("DELETE FROM `users` WHERE id= $userID");
+        if ($userImg != 'profile.png') {
+            $delete = unlink("../public/uploads/$userImg");
+        }
         deleteEventsOfUser($userID);
     }
+    $pdo = null;
     return $done;
+}
+
+//-----------------------------------------------DELETE USER PROFILE IMG
+function deleteUserProfileImg($userID)
+{
+
 }
 
 //-----------------------------USERS ON EVENT
@@ -398,6 +409,7 @@ function sudoDeleteEvent($id)
     db_connect();
     global $pdo;
     $done = $pdo->exec("DELETE FROM `events` WHERE `id` = $id");
+    $del = $pdo->exec("DELETE FROM `subs` WHERE `eventID` = $id");
     return $done;
 }
 //--------------------------------------------------------------UPADATE TOKEN ON LOGIN
