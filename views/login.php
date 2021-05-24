@@ -8,7 +8,7 @@ require_once "components/login_controller.php";
       <h1 class="h3 mb-4 fw-normal">Identifiez Vous</h1>
 
       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Adresse email</label>
+      <b>  <label for="exampleInputEmail1" class="form-label">Adresse email</label> </b>
         <input
           type="email"
           name="email"
@@ -20,7 +20,7 @@ require_once "components/login_controller.php";
       </div>
 
       <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Mot de Pass</label>
+      <b>  <label for="exampleInputPassword1" class="form-label">Mot de Pass</label> </b>
         <input type="password" name="password" class="form-control" id="exampleInputPassword1"  minlength="8" required />
       </div>
 

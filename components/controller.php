@@ -2,6 +2,7 @@
 require_once "model.php";
 require_once "upload.php";
 // require_once "dev.php";
+
 // -----------------------------------------------REGISTER
 if (isset($_POST['register'])) {
     $img = 'profile.png';
@@ -20,9 +21,16 @@ if (isset($_POST['register'])) {
     $lastname = $_POST['lastname'];
     if ($password1 === $password2) {
         $id = registerUser($email, $firstname, $lastname, $password1, $img);
-        if ($id > 0) {
-            header("Location: ../index.php?page=login&register=success");
+        if ($id == 'DUPLICATE') {
+            header("Location: ../index.php?page=login&msg=Ce mail est déja pris.");
+            die;
         }
+    } else {
+        header("Location: ../index.php?page=login&msg=Mots de passe ne correspondent pas.");
+        die;
+    }
+    if ($id > 0) {
+        header("Location: ../index.php?page=login&msg=Vous etes enregistré. Veuillez vous logger.");
     }
 }
 
@@ -44,7 +52,7 @@ if (isset($_POST['login'])) {
         set_cookie('user', $data, 14);
         set_cookie('userID', $result['id'], 14);
         set_cookie('token', $result['token'], 14);
-        header("Location: ../index.php?page=profile");
+        header("Location: ../index.php?page=profile&msg=Vous etes connecté.");
     }
 }
 
@@ -78,7 +86,7 @@ if (isset($_POST['addEvent'])) {
         $time = $_POST['time'];
         $latsID = addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img);
         if ($latsID > 0) {
-            header("Location:../index.php");
+            header("Location:../index.php?msg=Evenment à été crée.");
         }
     }
 }
@@ -99,9 +107,9 @@ if (isset($_POST['updateEvent'])) {
         $time = $_POST['time'];
         $updated = updateEvent($eventID, $name, $category, $place, $city, $description, $date, $time, $img);
         if ($updated) {
-            header("Location:../index.php");
+            header("Location:../index.php?msg=Mise à Jour de l'evenment.");
         } else {
-            $_GET['message'] = 'EVENT UPDATE FAILED';
+            $_GET['msg'] = 'Echcec mis à Jour';
         }
         return null;
     }
@@ -123,9 +131,9 @@ if (isset($_POST['activateEvent'])) {
     $eventID = $_POST['id'];
     $active = activDeactivEvent($eventID, $userID);
     if (isset($_POST['table'])) {
-        header("Location: ../?page=eventsTable&userID=$userID");
+        header("Location: ../?page=eventsTable&userID=$userID#main");
     } else {
-        header("Location: ../?page=updateEvent&id=$eventID");
+        header("Location: ../?page=updateEvent&id=$eventID#main");
     }
 }
 
@@ -138,9 +146,9 @@ if (isset($_POST['deleteEvent'])) {
     $eventID = $_POST['id'];
     $done = deleteEvent($eventID, $userID);
     if ($done) {
-        header("Location:../?page=events&message=DELETED");
+        header("Location:../?page=events&msg=Votre evenment à été supprimé.");
     } else {
-        header("Location:../?page=events&message=ERROR DELETING");
+        header("Location:../?page=events&msg=Erreur Suppression.");
     }
 }
 //-------------------------------------------------DELETE USER
@@ -159,9 +167,9 @@ if (isset($_POST['deleteUser'])) {
         setcookie('token', null, -1, '/');
         unset($_COOKIE['token']);
         unset($_COOKIE['id']);
-        header("Location: ../index.php?message=UserDeleted");
+        header("Location: ../index.php?msg=Votre compte à été supprimé.");
     } else {
-        header("Location: ../index.php?message=ErrorDeleting");
+        header("Location: ../index.php?msg=Erreur Suppression.");
     }
 }
 
@@ -170,7 +178,7 @@ if (isset($_POST['subscribe'])) {
     $eventID = $_POST['eventID'];
     $userID = $_POST['subscribe'];
     $subID = addToEvent($eventID, $userID);
-    header("Location:../?page=event&id=$eventID");
+    header("Location:../?page=event&id=$eventID#main");
 }
 
 if (isset($_POST['unsubscribe'])) {
@@ -178,13 +186,13 @@ if (isset($_POST['unsubscribe'])) {
     $userID = $_POST['unsubscribe'];
     $unsubID = unsubscribeEvent($eventID, $userID);
     echo $unsubID;
-    header("Location:../?page=event&id=$eventID");
+    header("Location:../?page=event&id=$eventID#main");
 }
 
 //-----------------------------------SHOW EVENT UPDATE FORM
 if (isset($_POST['manage'])) {
     $eventID = $_POST['eventID'];
-    header("Location:../?page=updateEvent&id=$eventID");
+    header("Location:../?page=updateEvent&id=$eventID#main");
 }
 
 //----------------------------------------------------------------------------ADMIN SECTION
@@ -236,7 +244,7 @@ if (isset($_GET['cmd'])) {
             $id = $_GET['user'];
             $done = activateUser($id);
             if ($done) {
-                header("Location: ../../?page=usersList");
+                header("Location: ../../?page=usersList#main");
             }
         }
 //---------------------------------------------DEACTIVATE USER
@@ -244,7 +252,7 @@ if (isset($_GET['cmd'])) {
             $id = $_GET['user'];
             $done = deactivateUser($id);
             if ($done) {
-                header("Location: ../../?page=usersList");
+                header("Location: ../../?page=usersList#main");
             } else {
                 header("Location: ../idex.php&message=Erreur Desactivation ");
             }
@@ -270,9 +278,9 @@ if (isset($_POST['confirmDeleteUser'])) {
         $id = $_POST['userToDelete'];
         if (sudoDeleteUser($id)) {
 
-            header("Location: ../?page=usersList&message=Utilisateur $id Suprimé !");
+            header("Location: ../?page=usersList&msg=Utilisateur $id Suprimé !");
         } else {
-            header("Location: ../idex.php&message=Erreur Suppression Utilisateur");
+            header("Location: ../idex.php&msg=Erreur Suppression Utilisateur");
         }
     }
 }

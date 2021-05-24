@@ -7,6 +7,12 @@ foreach ($events as $event) {
     $name = $event['name'];
     $date = toFrDate($event['date']);
     $description = $event['description'];
+    if (strlen($description) > 180) {
+        $cardDesc = substr($description, 0, 180);
+        $cardDesc .= '...';
+    } else {
+        $cardDesc = $description;
+    }
     $img = $event['img'];
     $eventID = $event['id'];
     $creatorID = $event['creatorID'];

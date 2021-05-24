@@ -1,15 +1,6 @@
 <?php
 if (isset($_COOKIE['userID'])) {
-    require_once "model.php";
-    $id = $_COOKIE['userID'];
-    dbLogOut($id);
-
+    $localUser = $_COOKIE['userID'];
+    logout($localUser);
 }
-
-setcookie('user', null, -1, '/');
-unset($_COOKIE['user']);
-setcookie('userID', null, -1, '/');
-unset($_COOKIE['userID']);
-setcookie('token', null, -1, '/');
-unset($_COOKIE['token']);
-header('Location:index.php?page=logout');
+header('Location:index.php?page=login&msg=Vous avez ete deconnecte.');

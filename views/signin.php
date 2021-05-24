@@ -1,6 +1,6 @@
 <main id='main' class="container my-5">
   <h2 class="text-center">S'inscrire:</h2>
-  <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" novalidate>
+  <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" id="registerUser" novalidate>
   <div class="col-12 d-flex justify-content-center">
   <img id="formLogo" class="col-12 mb-4" src="assets/person-plus.svg" alt="person-plus">
   </div>
@@ -28,6 +28,7 @@
         <label class="form-label">Confirmez le Mot de pass:</label>
         <input type="password" name="password2" class="form-control"  minlength="8" required />
       </div>
+      <h3 class="text-center text-danger my-3" id="error"></h3>
 
     <div class="col-12">
       <div class="form-check d-flex justify-content-end">
@@ -41,8 +42,4 @@
   </form>
 </main>
 
-<script>
-document.getElementById('formLogo').addEventListener('click', () => {
-  document.getElementById('fileUpload').click()
-})
-</script>
+<script src="js/signin.js"></script>

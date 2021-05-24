@@ -1,24 +1,24 @@
 <?php
 $userID = checkConnect();
-$register = "<li class='nav-item'><a class='nav-link' href='?page=signin#main'>Inscription</a></li>";
-$events = "<li class='nav-item'><a class='nav-link' href='?page=events#main'>Evenments</a></li>";
-$login = "<li class='nav-item'><a class='nav-link' href='?page=login#main'>Log in</a></li>";
-$eventTab = "<li class='nav-item'><a class='nav-link' href='?page=eventsTable#main'>EVENT TABLE</a></li>";
+$register = "<li class='nav-item mx-5'><a class='nav-link' href='?page=signin#main'>Inscription</a></li>";
+$events = "<li class='nav-item mx-5'><a class='nav-link' href='?page=events#main'>Evenments</a></li>";
+$login = "<li class='nav-item mx-5'><a class='nav-link' href='?page=login#main'>Log in</a></li>";
+$eventTab = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventsTable#main'>EVENT TABLE</a></li>";
 
 //----------------------------------USER LINKS
-$addEvent = " <li class='nav-item'><a class='nav-link' href='?page=addevent#main'>Ajouter Evenment</a></li>";
-$logout = "<li class='nav-item'><a class='nav-link' href='?logout'>Deconnecter</a></li>";
-$account = "<li class='nav-item'><a class='nav-link' href='?page=profile#main'>Votre Compte</a></li>";
-$contact = "<li class='nav-item'><a class='nav-link' href='?page=contact#main'>Contact</a></li>";
-$yourEvents = "<li class='nav-item'><a class='nav-link' href='?page=eventsTable&userID=$userID#main'>Vos evenments</a></li>";
-$yourSubriptions = "<li class='nav-item'><a class='nav-link' href='?page=userSubEvntsTable&id=$userID#main'>Vos participations</a></li>";
+$addEvent = " <li class='nav-item mx-5'><a class='nav-link' href='?page=addevent#main'>Ajouter Evenment</a></li>";
+$logout = "<li class='nav-item mx-5'><a class='nav-link' href='?logout'>Deconnecter</a></li>";
+$account = "<li class='nav-item mx-5'><a class='nav-link' href='?page=profile#main'>Votre Compte</a></li>";
+$contact = "<li class='nav-item mx-5'><a class='nav-link' href='?page=contact#main'>Contact</a></li>";
+$yourEvents = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventsTable&userID=$userID#main'>Vos evenments</a></li>";
+$yourSubriptions = "<li class='nav-item mx-5'><a class='nav-link' href='?page=userSubEvntsTable&id=$userID#main'>Vos participations</a></li>";
 
 //-----------------------------ADMIN
 
-$AdminAccount = "<li class='nav-item'><a class='nav-link' href='?page=admin#main'>ADMIN</a></li>";
-$AdminUserList = "<li class='nav-item'><a class='nav-link' href='?page=usersList'>Lste des Utilisateurs</a></li>";
-$AdminEventList = "<li class='nav-item'><a class='nav-link' href='?page=eventList'>Lste des Evenments</a></li>";
-$AdminsubsList = "<li class='nav-item'><a class='nav-link' href='?page=subsTable'>Lste des Evenments</a></li>";
+$AdminAccount = "<li class='nav-item mx-5'><a class='nav-link' href='?page=admin#main'>ADMIN</a></li>";
+$AdminUserList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=usersList'>Lste des Utilisateurs</a></li>";
+$AdminEventList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventList'>Lste des Evenments</a></li>";
+$AdminsubsList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=subsTable'>Lste des Evenments</a></li>";
 
 $link1 = $events;
 $link2 = $contact;

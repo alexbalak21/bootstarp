@@ -6,12 +6,8 @@
   height: 80px;
 }
 
-.card-desc {
-  min-height: 120px;
-}
-
 .card {
-  min-height: 530px;
+  max-height: 600px;
 }
 .tab-img {
   height: 40px;

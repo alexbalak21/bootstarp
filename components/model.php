@@ -33,7 +33,19 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
     $stmt->bindParam(':passHash', $passHash);
     $stmt->bindParam(':img', $img);
     $stmt->bindParam(':validation', $validation);
-    $done = $stmt->execute();
+    try {
+        $done = $stmt->execute();
+    } catch (PDOException $e) {
+        echo "<br><br><br><br>";
+
+        foreach ($e as $key => $case) {
+            $err = $case[1];
+        }
+        if ($err == 1062) {
+            $pdo = 0;
+            return "DUPLICATE";
+        }
+    }
     $last_id = $pdo->lastInsertId();
     $pdo = null;
     return $last_id;
@@ -426,33 +438,44 @@ function updateToken($id)
     return $token;
 }
 
-function dbLogOut($id)
-{
-    db_connect();
-    global $pdo;
-    $done = $pdo->exec("UPDATE `users` SET `token` = 0 WHERE `id`=$id");
-    return $done;
-}
-
 //--------------------------------CHECK TOKEN
 function checkConnect()
 {
     db_connect();
     global $pdo;
+    $connected = false;
+    $userID = 0;
     if (isset($_COOKIE['userID'])) {
         $userID = $_COOKIE['userID'];
         $token = $_COOKIE['token'];
         $hashToken = $pdo->query("SELECT `token` FROM `users` WHERE id = $userID")->fetchColumn();
         $connected = password_verify($token, $hashToken);
-    } else {
-        $connected = false;
     }
     if ($connected) {
         return $userID;
     } else {
+        logout($userID);
         return false;
     }
+}
 
+//-----------------------------------LOGOUT
+
+function logout($id)
+{
+    if ($id) {
+        db_connect();
+        global $pdo;
+        $done = $pdo->exec("UPDATE `users` SET `token` = 0 WHERE `id`=$id");
+    }
+    $done = 0;
+    setcookie('user', null, -1, '/');
+    unset($_COOKIE['user']);
+    setcookie('userID', null, -1, '/');
+    unset($_COOKIE['userID']);
+    setcookie('token', null, -1, '/');
+    unset($_COOKIE['token']);
+    return $done;
 }
 
 //-------------------GET TITLE OF EVENT ID

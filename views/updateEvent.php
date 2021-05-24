@@ -1,6 +1,6 @@
 <?php
 
-require_once "components/event_controller.php";
+require_once "components/viewsControllers/event_controller.php";
 
 ?>
 

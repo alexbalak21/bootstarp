@@ -1,5 +1,9 @@
 <?php
 require_once "controller.php";
+$unsubID = 0;
+$userID = checkConnect();
+$error = "";
+
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
     if (!file_exists("views/$page.php")) {

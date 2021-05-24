@@ -10,7 +10,7 @@
           <h3 class="text-danger">Supprimer cet Evenment:</h3>
           <form action="components/controller.php" method="POST">
           <input type="hidden" name="eventToDelete" value="<?=$eventID ?>">
-        <div class="py-3">
+        <div class="modal-footer py-3">
         <button class="btn btn-danger btn-lg" type="submit" name="confirmDeleteEvent">Suprimer</button>
         <button class="btn btn-primary btn-lg" type="button" data-bs-dismiss="modal">Annuler</button>
         </div>
