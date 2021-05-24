@@ -10,6 +10,3 @@ $error = "";
 if (isset($_GET['error'])) {
     $error = $_GET['error'];
 }
-
-$MyEvents = count(getAllEventsOfUser($userID));
-$participatingEvents = count(getAllUsersParticipatingEvets($userID));

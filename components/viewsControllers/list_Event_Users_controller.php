@@ -1,6 +1,5 @@
 <?php
 require_once "components/checkLogin.php";
-$eventID = $_GET['eventID'];
 $users = usersOnEvent($eventID);
 foreach ($users as $subID => $user) {
     $name = $user['name'];

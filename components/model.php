@@ -80,30 +80,17 @@ function checkUserPass($email, $password)
         unset($data['password']);
         $data['connected'] = "TRUE";
         $pdo = null;
+        $id = $data['id'];
+        $token = updateToken($id);
+        $data['token'] = $token;
         return $data;
     } else {
         $data = null;
-        $pdo = null;
         return "WRONGPASS";
     }
+    $pdo = null;
 }
 
-function addProduct($userID, $name, $category, $price, $description, $img = 'porduct.png')
-{
-    db_connect();
-    global $pdo;
-    $stmt = $pdo->prepare("INSERT INTO `products` (`userID`, `name`, `category`, `price`, `description`, `img`) VALUES (:userID, :name, :category, :price, :description, :img)");
-    $stmt->bindParam(':userID', $userID);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':category', $category);
-    $stmt->bindParam(':price', $price, PDO::PARAM_INT);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':img', $img);
-    $done = $stmt->execute();
-    $last_id = $pdo->lastInsertId();
-    $pdo = null;
-    return $last_id;
-}
 //--------------------------------------------------------------------GET ALL EVENTS
 function getAll($table = 'events')
 {
@@ -131,6 +118,19 @@ function getAllEventsOfUser($userID)
     $dpo = null;
     return $data;
 }
+
+//------------------------------------------------------------DELETE ALL EVENTS OF USER
+
+function deleteEventsOfUser($id)
+{
+    db_connect();
+    global $pdo;
+    $events = $pdo->exec("DELETE FROM `events` WHERE `creatorID`=$id");
+    $subs = $pdo->exec("DELETE FROM `subs` WHERE `userID`=$id");
+    $pdo = null;
+    return $done;
+}
+
 //------------------------------------------------------------------------------------ADD EVENT
 function addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img = 'default.png')
 {
@@ -209,7 +209,21 @@ function getEventByID($eventID)
     $creatorID = $data['creatorID'];
     $dpo = null;
     $creator = getOriansator($creatorID);
-    $data += $creator;
+    $data['names'] = $creator;
+    return $data;
+}
+
+//-------------------------------------------------------------GET ROW IN A TABLE
+function getRowByID($table = 'events', $id)
+{
+    db_connect();
+    global $pdo;
+    $sql = "SELECT * FROM $table WHERE id=$id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $data = $stmt->fetch();
+    $dpo = null;
     return $data;
 }
 
@@ -218,10 +232,9 @@ function getOriansator($creatorID)
 {
     db_connect();
     global $pdo;
-    $stmt = $pdo->query("SELECT firstname, lastname FROM users WHERE id=$creatorID");
-    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    $data = $stmt->fetch();
-    return $data;
+    $data = $pdo->query("SELECT firstname, lastname FROM `users` WHERE `id`= $creatorID")->fetch(PDO::FETCH_ASSOC);
+    $names = implode(" ", $data);
+    return $names;
 }
 
 //-------------------------------------------------------------ADD USER TO AN EVENT
@@ -276,7 +289,7 @@ function deleteUser($userID, $password)
     $passHash = $pdo->query("SELECT `password` FROM users WHERE id = $userID")->fetchColumn();
     if (password_verify($password, $passHash)) {
         $done = $pdo->exec("DELETE FROM `users` WHERE id= $userID");
-        echo $done;
+        deleteEventsOfUser($userID);
     }
     return $done;
 }
@@ -311,6 +324,9 @@ function getUserByID($userID)
     db_connect();
     global $pdo;
     $user = $pdo->query("SELECT firstname, lastname, email, img FROM `users` WHERE id = $userID")->fetch(PDO::FETCH_ASSOC);
+    unset($user['password']);
+    unset($user['validation']);
+    unset($user['token']);
     return $user;
 }
 
@@ -353,6 +369,8 @@ function sudoDeleteUser($id)
     db_connect();
     global $pdo;
     $done = $pdo->exec("DELETE FROM `users` WHERE `id` = $id");
+    deleteEventsOfUser($userID);
+    $pdo = null;
     return $done;
 }
 
@@ -381,4 +399,72 @@ function sudoDeleteEvent($id)
     global $pdo;
     $done = $pdo->exec("DELETE FROM `events` WHERE `id` = $id");
     return $done;
+}
+//--------------------------------------------------------------UPADATE TOKEN ON LOGIN
+function updateToken($id)
+{
+    db_connect();
+    global $pdo;
+    $token = substr(uniqid('', true), 6, 16);
+    $hashToken = password_hash($token, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("UPDATE `users` SET `token` = :token WHERE `id`= $id");
+    $stmt->bindParam(':token', $hashToken);
+    $stmt->execute();
+    return $token;
+}
+
+function dbLogOut($id)
+{
+    db_connect();
+    global $pdo;
+    $done = $pdo->exec("UPDATE `users` SET `token` = 0 WHERE `id`=$id");
+    return $done;
+}
+
+//--------------------------------CHECK TOKEN
+function checkConnect()
+{
+    db_connect();
+    global $pdo;
+    if (isset($_COOKIE['userID'])) {
+        $userID = $_COOKIE['userID'];
+        $token = $_COOKIE['token'];
+        $hashToken = $pdo->query("SELECT `token` FROM `users` WHERE id = $userID")->fetchColumn();
+        $connected = password_verify($token, $hashToken);
+    } else {
+        $connected = false;
+    }
+    if ($connected) {
+        return $userID;
+    } else {
+        return false;
+    }
+
+}
+
+//-------------------GET TITLE OF EVENT ID
+function getTitleOfEvent($id)
+{
+    db_connect();
+    global $pdo;
+    $eventName = $pdo->query("SELECT `name` FROM `events` WHERE id = $id")->fetchColumn();
+    $pdo = null;
+    return $eventName;
+}
+
+//----------------------GET ALL EVENTS WHRE USER IS PARTICIPANTNG
+
+function allParticipateEvents($userID)
+{
+    db_connect();
+    global $pdo;
+    $events = $pdo->query("SELECT `eventID` FROM `subs` WHERE userID = $userID")->fetchAll(PDO::FETCH_ASSOC);
+    $subEvents = [];
+    foreach ($events as $key => $value) {
+        $id = $value['eventID'];
+        $subEvents[$key] = $pdo->query("SELECT * FROM `events` WHERE id=$id")->fetch(PDO::FETCH_ASSOC);
+        $creator = $subEvents[$key]['creatorID'];
+        $subEvents[$key]['names'] = $firstLastName = getOriansator($creator);
+    }
+    return $subEvents;
 }

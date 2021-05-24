@@ -1,4 +1,5 @@
 <?php
+require_once "components/convert.php";
 if (isset($_COOKIE['userID'])) {
     $USER = json_decode($_COOKIE['user'], true);
     $activ = '';
@@ -10,6 +11,7 @@ if (isset($_COOKIE['userID'])) {
         $users = getAll('users');
         foreach ($users as $user) {
             $id = $user['id'];
+            $regDate = toFrDate($user['reg_date']);
             require "blocks/delleteUserConfirm.php";
             if ($user['validated']) {
                 $valid = "<a href='components/controller.php/?cmd=invalidMail&user=$id'><button class='btn btn-secondary'>Invalider</button></a>";

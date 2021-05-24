@@ -31,9 +31,10 @@ require_once "components/profile_controller.php";
       </div>
       <div class="py-3 row ">
         <h2 class="px-4 col-lg-5">Vos activitées à participées:</h2>
-        <a class="col-lg-2" href=""><h2><?=$participatingEvents ?></h2></a>
+        <a class="col-lg-2" href="index.php?page=userSubEvntsTable&id=<?=$userID ?>"><h2><?=$participatingEvents ?></h2></a>
         <div class="col-lg-2">
-        <button type="button" class="btn-lg btn-primary">Voir</button>
+        <a class="col-lg-2" href="index.php?page=userSubEvntsTable&id=<?=$userID ?>"><button type="button" class="btn-lg btn-primary">Voir</button></a>
+        <div class="col-lg-2">
         </div>
       </div>
       </div>

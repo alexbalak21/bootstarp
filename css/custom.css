@@ -17,3 +17,16 @@
   height: 40px;
   width: 40px;
 }
+
+.img-card {
+  height: 240px;
+}
+
+.card-desc {
+  height: 240px;
+}
+
+.tab-big-img {
+  height: 80px;
+  width: 80px;
+}

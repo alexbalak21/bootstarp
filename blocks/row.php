@@ -1,37 +1,34 @@
 <tr>
-<td>
+  <td>
     <?=$date ?>
-</td>
-<td>
+  </td>
+  <td>
     <?=$name ?>
-</td>
-<td>
+  </td>
+  <td>
     <?=$city ?>
-</td>
-<td>
+  </td>
+  <td>
     <?=$place ?>
-</td>
-<td>
+  </td>
+  <td>
     <?=$subs ?>
-</td>
-<td class="d-flex">
+  </td>
+  <td class="d-flex">
+    <form action="components/router.php" method="GET">
+      <?=$updateButton ?>
+      <input type="hidden" name="id" value="<?=$eventID ?>" />
+      <input type="hidden" name="table" value="1" />
+    </form>
+    <form action="components/controller.php" method="POST">
+      <input type="hidden" name="id" value="<?=$eventID ?>" />
+      <input type="hidden" name="table" value="0" />
 
-<form action="components/router.php" method="GET">
-    <?=$updateButton ?>
-    <input type="hidden" name="id" value="<?=$eventID ?>">
-<input type="hidden" name="table" value="1">
-</form>
-<form action="components/controller.php" method="POST">
-<input type="hidden" name="id" value="<?=$eventID ?>">
-<input type="hidden" name="table" value="0">
-
-<?=$activateButton ?>
-
-</form>
-<?=$deleteButton ?>
-
-</td>
-<?php
+      <?=$activateButton ?>
+    </form>
+    <?=$deleteButton ?>
+  </td>
+  <?php
 require "blocks/eventModal.php";
 ?>
 </tr>

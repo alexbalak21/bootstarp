@@ -3,7 +3,7 @@
 <td><?=$user['email'] ?></td>
 <td><?=$user['firstname'] ?></td>
 <td><?=$user['lastname'] ?></td>
-<td><?=$user['reg_date'] ?></td>
+<td><?=$regDate ?></td>
 <td><?=$valid ?></td>
 <td><?=$activ ?></td>
 <td><?=$actions ?></td>

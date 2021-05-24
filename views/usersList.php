@@ -14,7 +14,7 @@
 <th>Image</th>
 </tr>
 <?php
-require_once "components/users_controller.php";
+require_once "components/viewsControllers/users_controller.php";
 ?>
 </table>
 

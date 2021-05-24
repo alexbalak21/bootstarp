@@ -1,4 +1,4 @@
-<div class="modal" tabindex="-1" id="eventDeleteModal<?=$eventID ?>">
+<div class="modal" tabindex="-1" id="eventDeleteModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -18,3 +18,5 @@
     </div>
   </div>
 </div>
+
+

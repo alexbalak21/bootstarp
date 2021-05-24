@@ -43,6 +43,7 @@ if (isset($_POST['login'])) {
         $data = json_encode($result, true);
         set_cookie('user', $data, 14);
         set_cookie('userID', $result['id'], 14);
+        set_cookie('token', $result['token'], 14);
         header("Location: ../index.php?page=profile");
     }
 }
@@ -55,65 +56,55 @@ function set_cookie($name, $value, $expDays)
 
 //-------------------------------------------------------------------------ADD EVENT
 if (isset($_POST['addEvent'])) {
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
+    $userID = checkConnect();
+    if (!$userID) {
+        header('Location: ../index.php');
     } else {
-        header("Location: index.php");
-    }
-    $userID = $USER['id'];
-    $img = 'default.png';
-    if (!empty($_FILES['fileToUpload']['name'])) {
-        $error = imgFileUpload();
-        if ($error == 0) {
-            $_GET['uploadError'] = $error;
-        } else {
-            $img = $_FILES['uploaded'];
+        $img = 'default.png';
+        if (!empty($_FILES['fileToUpload']['name'])) {
+            $error = imgFileUpload();
+            if ($error == 0) {
+                $_GET['uploadError'] = $error;
+            } else {
+                $img = $_FILES['uploaded'];
+            }
         }
-    }
-    $name = $_POST['eventName'];
-    $category = $_POST['category'];
-    $place = $_POST['place'];
-    $city = $_POST['city'];
-    $description = $_POST['description'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
-    $latsID = addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img);
-    if ($latsID > 0) {
-        header("Location:../index.php");
+        $name = $_POST['eventName'];
+        $category = $_POST['category'];
+        $place = $_POST['place'];
+        $city = $_POST['city'];
+        $description = $_POST['description'];
+        $date = $_POST['date'];
+        $time = $_POST['time'];
+        $latsID = addEvent($userID, $name, $category, $place, $city, $description, $date, $time, $img);
+        if ($latsID > 0) {
+            header("Location:../index.php");
+        }
     }
 }
 //-------------------------------------------------------------------------UPDATE EVENT
 if (isset($_POST['updateEvent'])) {
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
+    $userID = checkConnect();
+    if (!$userID) {
+        header('Location: ../index.php');
     } else {
-        header("Location: index.php");
-    }
-    $userID = $USER['id'];
-    $img = $_POST['img'];
-    if (!empty($_FILES['fileToUpload']['name'])) {
-        $error = imgFileUpload();
-        if ($error == 0) {
-            $_GET['uploadError'] = $error;
+        $img = manageFileUpdate($_POST['img']);
+        $eventID = $_POST['id'];
+        $name = $_POST['eventName'];
+        $category = $_POST['category'];
+        $place = $_POST['place'];
+        $city = $_POST['city'];
+        $description = $_POST['description'];
+        $date = $_POST['date'];
+        $time = $_POST['time'];
+        $updated = updateEvent($eventID, $name, $category, $place, $city, $description, $date, $time, $img);
+        if ($updated) {
+            header("Location:../index.php");
         } else {
-            $img = $_FILES['uploaded'];
+            $_GET['message'] = 'EVENT UPDATE FAILED';
         }
+        return null;
     }
-    $eventID = $_POST['id'];
-    $name = $_POST['eventName'];
-    $category = $_POST['category'];
-    $place = $_POST['place'];
-    $city = $_POST['city'];
-    $description = $_POST['description'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
-    $updated = updateEvent($eventID, $name, $category, $place, $city, $description, $date, $time, $img);
-    if ($updated) {
-        header("Location:../index.php");
-    } else {
-        $_GET['message'] = 'EVENT UPDATE FAILED';
-    }
-    return null;
 }
 
 if (isset($_GET['admin'])) {
@@ -125,13 +116,11 @@ if (isset($_GET['admin'])) {
 }
 //------------------------------------------------------------------------ACTIVATE / DEACTIVATE EVENT
 if (isset($_POST['activateEvent'])) {
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
-    } else {
-        header("Location: index.php");
+    $userID = checkConnect();
+    if (!$userID) {
+        header('Location: ../index.php');
     }
     $eventID = $_POST['id'];
-    $userID = $USER['id'];
     $active = activDeactivEvent($eventID, $userID);
     if (isset($_POST['table'])) {
         header("Location: ../?page=eventsTable&userID=$userID");
@@ -140,44 +129,14 @@ if (isset($_POST['activateEvent'])) {
     }
 }
 
-//-------------------------------------------UPDATE USER
-if (isset($_POST['updateUser'])) {
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
-    } else {
-        header("Location: index.php");
-    }
-    $img = $USER['img'];
-    if (!empty($_FILES['fileToUpload']['name'])) {
-        $error = imgFileUpload();
-        if ($error == 0) {
-            $_GET['uploadError'] = $error;
-        } else {
-            $img = $_FILES['uploaded'];
-        }
-    }
-    $email = $_POST['email'];
-    $password2 = $_POST['password2'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $update = updateUser($USER['id'], $email, $firstname, $lastname, $password2, $img);
-    $pdo = null;
-    if ($update) {
-        header("Location: ../index.php?page=login&update=success");
-    } else {
-        $_GET['message'] = "Update Error";
-    }
-    return null;
-}
 //--------------------------------------------------DELETE EVENT
 if (isset($_POST['deleteEvent'])) {
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
-    } else {
-        header("Location: index.php");
+    $userID = checkConnect();
+    if (!$userID) {
+        header('Location: ../index.php');
     }
     $eventID = $_POST['id'];
-    $done = deleteEvent($eventID, $USER['id']);
+    $done = deleteEvent($eventID, $userID);
     if ($done) {
         header("Location:../?page=events&message=DELETED");
     } else {
@@ -292,6 +251,7 @@ if (isset($_POST['confirmDeleteUser'])) {
     $id = $_POST['userToDelete'];
     if ($adminID == 99) {
         if (sudoDeleteUser($id)) {
+
             header("Location: ../?page=usersList&message=Utilisateur $id Suprimé !");
         } else {
             header("Location: ../idex.php&message=Erreur Suppression Utilisateur");
@@ -309,4 +269,52 @@ if (isset($_POST['confirmDeleteEvent'])) {
             header("Location: ../idex.php&message=Erreur Suppression Evenment");
         }
     }
+}
+
+//-------------------------------------------------UPADTE USER
+if (isset($_POST['updateUser'])) {
+    $userID = checkConnect();
+    if (!$userID) {
+        header('Location: ../index.php');
+    } else {
+        $img = $_POST['img'];
+        if (!empty($_FILES['fileToUpload']['name'])) {
+            $error = imgFileUpload();
+            if ($error == 0) {
+                $_GET['uploadError'] = $error;
+            } else {
+                $img = $_FILES['uploaded'];
+            }
+        }
+        $email = $_POST['email'];
+        $password1 = $_POST['password1'];
+        $password2 = $_POST['password2'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        if (!($password1 == $password2)) {
+            header("Location: ../index.php?page=upadteProfile&error=Mots de pass ne corresponend pas");
+        }
+        $update = updateUser($userID, $email, $firstname, $lastname, $password2, $img);
+        $pdo = null;
+        if ($update) {
+            header("Location: ../index.php?page=profile");
+        } else {
+            $_GET['error'] = "Update Error";
+        }
+        return null;
+    }
+}
+
+//------------FILE MANAGMET
+function manageFileUpdate($img)
+{
+    if (!empty($_FILES['fileToUpload']['name'])) {
+        $error = imgFileUpload();
+        if ($error == 0) {
+            $_GET['uploadError'] = $error;
+        } else {
+            $img = $_FILES['uploaded'];
+        }
+    }
+    return $img;
 }

@@ -1,10 +1,8 @@
 <?php
-if (isset($_COOKIE['user'])) {
-    $USER = json_decode($_COOKIE['user'], true);
-} else {
-    header("Location: index.php");
-}
+require_once "components/viewsControllers/addEvent_controller.php";
+
 ?>
+
 <main class="container my-5">
   <h2 class="text-center">Ajouter un evenement:</h2>
   <form

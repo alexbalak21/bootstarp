@@ -1,10 +1,8 @@
 <?php
-require_once "components/checkLogin.php";
 $actions = "";
-if (!($USER == 'NOTCON')) {
-    if ($USER['id'] == $_GET['userID']) {
-        $actions = "<th>Actions</th>";
-    }
+$userID = checkConnect();
+if ($userID) {
+    $actions = "<th>Actions</th>";
 }
 
 ?>
@@ -20,7 +18,7 @@ if (!($USER == 'NOTCON')) {
 <?=$actions ?>
 </tr>
 <?php
-require_once "components/tab_controller.php";
+require_once "components/viewsControllers/tab_controller.php";
 ?>
 </table>
 </main>

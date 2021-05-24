@@ -1,11 +1,7 @@
 <?php
-if (isset($_COOKIE['user'])) {
-    $USER = json_decode($_COOKIE['user'], true);
-    $eventID = $_GET['id'];
-    require_once "components/event_controller.php";
-} else {
-    header("Location: index.php");
-}
+
+require_once "components/event_controller.php";
+
 ?>
 
 <main class="container my-5">

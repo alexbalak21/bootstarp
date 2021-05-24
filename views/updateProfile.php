@@ -1,10 +1,5 @@
 <?php
-if (isset($_COOKIE['user'])) {
-    $USER = json_decode($_COOKIE['user'], true);
-    require_once "blocks/deleteUserModal.php";
-} else {
-    header("Location: index.php");
-}
+require_once "components/viewsControllers/updateUser_controller.php";
 ?>
 
 
@@ -12,21 +7,23 @@ if (isset($_COOKIE['user'])) {
   <h2>Mettre à Jour son profil:</h2>
   <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" novalidate>
   <div class="col-12">
-  <img id="formLogo" class="mb-4" src="public/uploads/<?=$USER['img'] ?>" alt="person LOGO">
+  <img id="formLogo" class="mb-4" src="public/uploads/<?=$user['img'] ?>" alt="person LOGO">
+  <input type="hidden" name="img" value="<?=$user['img'] ?>">
   </div>
     <input type="file" name="fileToUpload" id="fileUpload" class="form-control-file">
-
+  <h4 class="error"><?=$error ?></h4>
     <div class="col-md-6">
       <label class="form-label">Vote Prènom:</label>
-      <input type="text" name="firstname" class="form-control" value="<?=$USER['firstname'] ?>" required />
+      <input type="text" name="firstname" class="form-control" value="<?=$user['firstname'] ?>" required />
+      <input type="hidden" name="img" value="<?=$user['img'] ?>">
     </div>
     <div class="col-md-6">
       <label class="form-label">Vote Nom:</label>
-      <input type="text" name="lastname" class="form-control" value="<?=$USER['lastname'] ?>" required />
+      <input type="text" name="lastname" class="form-control" value="<?=$user['lastname'] ?>" required />
     </div>
     <div class="col-md-6">
       <label class="form-label">Adresse E-mail:</label>
-      <input type="email" name="email" class="form-control" value="<?=$USER['email'] ?>" required />
+      <input type="email" name="email" class="form-control" value="<?=$user['email'] ?>" required />
     </div>
 
       <div class="col-md-6">

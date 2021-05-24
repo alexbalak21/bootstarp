@@ -1,4 +1,6 @@
 <?php
+require_once "components/convert.php";
+$userID = checkConnect();
 //------------------------------GET 1 EVENT PAGE
 if (isset($_GET['id'])) {
     //--------------------------HYDRATE LA PAGE EVENT
@@ -11,19 +13,14 @@ if (isset($_GET['id'])) {
     $date = $event['date'];
     $frDate = toFrDate($date);
     $time = substr($event['time'], 0, 5);
-    $firstname = $event['firstname'];
-    $lastname = $event['lastname'];
+    $names = $event['names'];
     $button = '';
     $link = "?page=user&id=$creatorID";
     $activateButton = "<button class='btn btn-success btn-lg' type='submit' name='activateEvent'>Activer</button>";
     if ($event['active']) {
         $activateButton = "<button class='btn btn-secondary btn-lg' type='submit' name='activateEvent'>Désactiver</button>";
     }
-
-    if (isset($_COOKIE['user'])) {
-        $USER = json_decode($_COOKIE['user'], true);
-        $userID = $USER['id'];
-
+    if ($userID) {
         $check = checkUserInEvent($eventID, $userID);
         //-----------------------------AFFICHE BOUTON PARTICIPER / SE DESINSCRIRE
         if ($check) {
@@ -41,11 +38,4 @@ if (isset($_GET['id'])) {
 
 } else {
     header("Location: ../index.php");
-}
-
-function toFrDate($date)
-{
-    $ymd = explode('-', $date);
-    $frommatDate = $ymd[2] . '/' . $ymd[1] . '/' . $ymd[0];
-    return $frommatDate;
 }

@@ -1,4 +1,5 @@
 <?php
+require_once "components/convert.php";
 if (isset($_COOKIE['userID'])) {
     $USER = json_decode($_COOKIE['user'], true);
     $activ = '';
@@ -11,6 +12,9 @@ if (isset($_COOKIE['userID'])) {
         foreach ($events as $event) {
             $img = $event['img'];
             $id = $event['id'];
+            $time = substr($event['time'], 0, 5);
+            $date = toFrDate($event['date']);
+            $postDate = toFrDate($event['postDate']);
             require "blocks/eventDeleteConfirm.php";
             if ($event['active']) {
                 $activ = "<a href='components/controller.php/?cmd=deactivateEvent&event=$id'><button class='btn btn-secondary'>Desactiver</button></a>";
