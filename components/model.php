@@ -36,7 +36,6 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
     try {
         $done = $stmt->execute();
     } catch (PDOException $e) {
-        echo "<br><br><br><br>";
 
         foreach ($e as $key => $case) {
             $err = $case[1];
@@ -49,6 +48,42 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
     $last_id = $pdo->lastInsertId();
     $pdo = null;
     return $last_id;
+}
+
+//----------------------------------------------SEND VALIDATION TOKEN TO MAIL
+function sendValidation($userID)
+{
+    db_connect();
+    global $pdo;
+    $user = $pdo->query("SELECT `email`, `validation` FROM `users` WHERE id = $userID")->fetch(PDO::FETCH_ASSOC);
+    $email = $user['email'];
+    $token = $user['validation'];
+    $url = "http://127.0.0.1/event/index.php?validation";
+    $get = "&email=$email&token=$token";
+    $fullUrl = $url . $get;
+    $link = "<a href='$fullUrl'>activation</a>";
+    $pdo = null;
+    return $link;
+}
+
+//-------------------------------------------------RECIVE VALIDATION REQUEST
+function reciveValidation($email, $token)
+{
+    db_connect();
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT `validation` FROM users WHERE email=:email");
+    $stmt->bindValue(':email', $email);
+    $stmt->execute();
+    $db_token = $stmt->fetchColumn();
+    if ($token === $db_token) {
+        $stmt = $pdo->prepare("UPDATE `users` SET `validation` = 0, `validated`= 1 WHERE email=:email");
+        $stmt->bindValue(':email', $email);
+        $stmt->execute();
+        $pdpo = null;
+        return 1;
+    }
+    $pdo = null;
+    return 0;
 }
 
 //--------------------------------------------------------------------------------UPDATE USER

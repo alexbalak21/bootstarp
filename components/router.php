@@ -4,6 +4,15 @@ $unsubID = 0;
 $userID = checkConnect();
 $error = "";
 
+if (isset($_GET['validation'])) {
+    $email = $_GET['email'];
+    $token = $_GET['token'];
+    $done = reciveValidation($email, $token);
+    echo $done;
+    die;
+
+}
+
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
     if (!file_exists("views/$page.php")) {

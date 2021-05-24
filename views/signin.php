@@ -21,12 +21,12 @@
 
       <div class="col-md-6">
         <label class="form-label">Entrèez un mot de pass:</label>
-        <input type="password" name="password1" class="form-control"  minlength="8" required />
+        <input type="password" name="password1" class="form-control" minlength="8" required />
       </div>
     <div class="col-md-6"></div>
       <div class="col-md-6 mb-3">
         <label class="form-label">Confirmez le Mot de pass:</label>
-        <input type="password" name="password2" class="form-control"  minlength="8" required />
+        <input type="password" name="password2" class="form-control" minlength="8" required />
       </div>
       <h3 class="text-center text-danger my-3" id="error"></h3>
 
