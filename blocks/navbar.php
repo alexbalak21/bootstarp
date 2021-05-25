@@ -4,10 +4,21 @@ $register = "<li class='nav-item mx-5'><a class='nav-link' href='?page=signin#ma
 $events = "<li class='nav-item mx-5'><a class='nav-link' href='?page=events#main'>Evenments</a></li>";
 $login = "<li class='nav-item mx-5'><a class='nav-link' href='?page=login#main'>Log in</a></li>";
 $eventTab = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventsTable#main'>EVENT TABLE</a></li>";
+$dropDown = "
+<li class='nav-item dropdown mx-5'>
+  <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+    <img src='assets/person-bounding-box.svg' alt='person'>
+  </a>
+  <ul class='dropdown-menu' aria-labelledby='navbarDropdown'>
+    <li><a class='dropdown-item' href='?page=profile'>Compte</a></li>
+    <li><a class='dropdown-item' href='?logout'>Deconnecter</a></li>
+  </ul>
+</li>
+";
 
 //----------------------------------USER LINKS
 $addEvent = " <li class='nav-item mx-5'><a class='nav-link' href='?page=addevent#main'>Ajouter Evenment</a></li>";
-$logout = "<li class='nav-item mx-5'><a class='nav-link' href='?logout'>Deconnecter</a></li>";
+$logout = $dropDown;
 $account = "<li class='nav-item mx-5'><a class='nav-link' href='?page=profile#main'>Votre Compte</a></li>";
 $contact = "<li class='nav-item mx-5'><a class='nav-link' href='?page=contact#main'>Contact</a></li>";
 $yourEvents = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventsTable&userID=$userID#main'>Vos evenments</a></li>";
@@ -21,8 +32,8 @@ $AdminEventList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eve
 $AdminsubsList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=subsTable'>Lste des Evenments</a></li>";
 
 $link1 = $events;
-$link2 = $contact;
-$link3 = $register;
+$link2 = $register;
+$link3 = $contact;
 $link4 = $login;
 $link5 = "";
 $link6 = "";
@@ -31,17 +42,18 @@ if ($userID) {
     $link2 = $addEvent;
     $link3 = $yourEvents;
     $link4 = $yourSubriptions;
-    $link5 = $account;
-    $link6 = $logout;
+    $link5 = $dropDown;
     if ($userID == 1) {
         $link1 = $AdminAccount;
         $link2 = $AdminUserList;
         $link3 = $AdminEventList;
         $link4 = $AdminsubsList;
+        $link5 = $dropDown;
     }
 }
 
 ?>
+
 
 
 
