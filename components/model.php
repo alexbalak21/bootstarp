@@ -109,7 +109,7 @@ function updateUser($userID, $email, $firstname, $lastname, $password, $img)
     return $updateDone;
 }
 
-//--------------------------------------------------------------------------CHECK USER LOGIN
+//--------------------------------------------------------------------------CHECK USER LOGIN POST
 function checkUserPass($email, $password)
 {
     db_connect();
@@ -498,7 +498,7 @@ function checkConnect()
     }
 }
 
-//-----------------------------------LOGOUT
+//---------------------------------------------------------------------------LOGOUT
 
 function logout($id)
 {
