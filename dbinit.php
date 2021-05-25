@@ -85,5 +85,25 @@ function create_table_sub()
     $pdo = null;
 }
 
+function create_table_messages()
+{
+    db_connect();
+    global $pdo;
+    $sql = "CREATE TABLE `messages` (
+    `id` INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    `creatorID` INT(6) UNSIGNED,
+
+    `fromID` INT(6) UUNSIGNED,
+    `toID` INT(6) UUNSIGNED,
+    `subject`  VARCHAR(255) NULL DEFAULT NULL,
+    `body` TEXT  NULL DEFAULT NULL,
+    `sendDate` DATE NULL DEFAULT NULL,
+    `read` BOOLEAN NOT NULL DEFAULT NULL
+    )";
+    $pdo->exec($sql);
+    echo "<br>TABLE EVENTS CREATED SUCCESSFULLY";
+    $pdo = null;
+}
+
 create_table_users();
 create_table_events();

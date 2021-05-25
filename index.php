@@ -1,6 +1,5 @@
 <?php
 require_once "components/router.php";
-
 ?>
 <!doctype html>
 <html lang="fr">
@@ -19,15 +18,17 @@ require_once "components/router.php";
   <body>
 
 
-  <?php
+<?php
+
+require_once "blocks/modals/message.php"; //---------------EVENT MODAL INCLUDE
+
 require_once "blocks/navbar.php";
+
 require_once "blocks/header.php";
-require_once "views/$page.php";
+
+require_once "views/$page.php"; //----------------------MAIN PAGE
+
 require_once "blocks/footer.php";
-require_once "blocks/modals/message.php";
-// if (isset($_GET['msg'])) {
-//     require_once "blocks/modals/activate.php";
-// }
 
 ?>
 
