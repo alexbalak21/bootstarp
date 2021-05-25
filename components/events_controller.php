@@ -30,7 +30,7 @@ foreach ($events as $event) {
         ";
         }
         if ($creatorID == $userID) {
-            $button = "<a href='index.php?page=updateEvent&id=$eventID'><button type='submit' class='m-4 position-absolute bottom-0 start-0 btn btn-success btn'>Gerer</button></a>";
+            $button = "<a href='index.php?page=updateEvent&id=$eventID'><button type='submit' class='m-4 position-absolute bottom-0 end-0 btn btn-success btn'>Gerer</button></a>";
         }
     }
     if ($userID == 1) {
