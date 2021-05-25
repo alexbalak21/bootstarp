@@ -14,7 +14,7 @@
       <p class="card-text card-desc"><?=$cardDesc ?></p>
       <div class="position-realative">
       <div class="col-4">
-      <a href="?page=event&id=<?=$eventID ?>"><button type="button" class="m-4 position-absolute bottom-0 start-0 btn btn-primary">Voir les details</button></a>
+        <?=$viewButton ?>
       </div>
       <?=$button ?>
       </div>
