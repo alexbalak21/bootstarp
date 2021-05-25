@@ -1,5 +1,7 @@
 <?php
+require_once "blocks/modals/message.php";
 require_once "components/convert.php";
+
 $userID = checkConnect();
 //------------------------------GET 1 EVENT PAGE
 if (isset($_GET['id'])) {

@@ -29,7 +29,7 @@ $yourSubriptions = "<li class='nav-item mx-5'><a class='nav-link' href='?page=us
 $AdminAccount = "<li class='nav-item mx-5'><a class='nav-link' href='?page=admin#main'>ADMIN</a></li>";
 $AdminUserList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=usersList'>Lste des Utilisateurs</a></li>";
 $AdminEventList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventList'>Lste des Evenments</a></li>";
-$AdminsubsList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=subsTable'>Lste des Evenments</a></li>";
+$AdminsubsList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=subsTable'>Lste des Inscriptions  </a></li>";
 
 $link1 = $events;
 $link2 = $register;

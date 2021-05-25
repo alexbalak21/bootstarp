@@ -427,7 +427,7 @@ function sudoDeleteUser($id)
     db_connect();
     global $pdo;
     $done = $pdo->exec("DELETE FROM `users` WHERE `id` = $id");
-    deleteEventsOfUser($userID);
+    deleteEventsOfUser($id);
     updateSubsCount();
     $pdo = null;
     return $done;

@@ -1,6 +1,7 @@
 <?php
 
 require_once "components/viewsControllers/event_controller.php";
+require_once "blocks/eventModal.php";
 
 ?>
 
@@ -18,7 +19,6 @@ require_once "components/viewsControllers/event_controller.php";
   <div class="col-12 d-flex justify-content-center">
       <img id="formLogo" class="col-12 mb-4" src="assets/image.svg" alt="image.svg" width="72" height="57" />
     </div>
-
 
     <input type="hidden" name="img" value="<?=$img ?>">
     <input type="file" name="fileToUpload" id="fileUpload" class="form-control-file" />
@@ -63,13 +63,10 @@ require_once "components/viewsControllers/event_controller.php";
       <button class="btn btn-primary btn-lg" type="submit" name="updateEvent">Mettre à Jour</button>
       <?=$activateButton ?>
     </div>
-    <?php
-require "blocks/eventModal.php";
 
-?>
   </form>
   <div class="text-center py-5">
-  <button class="col-2 btn btn-danger btn-lg" data-bs-toggle='modal' data-bs-target="#eventDeleteModal">Suprimer</button>
+  <button class="col-2 btn btn-danger btn-lg" data-bs-toggle='modal' data-bs-target="#eventDeleteModal<?=$eventID?>">Suprimer</button>
   </div>
 
 </main>

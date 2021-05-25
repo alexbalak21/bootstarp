@@ -1,5 +1,4 @@
 <?php
-require_once "components/model.php";
 require "components/convert.php";
 $userID = checkConnect();
 

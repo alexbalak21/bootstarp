@@ -10,7 +10,7 @@ if ($userID != 1) {
     foreach ($users as $user) {
         $id = $user['id'];
         $regDate = toFrDate($user['reg_date']);
-        require "blocks/delleteUserConfirm.php";
+        
         if ($user['validated']) {
             $valid = "<a href='components/controller.php/?cmd=invalidMail&user=$id'><button class='btn btn-secondary'>Invalider</button></a>";
         } else {
@@ -24,5 +24,6 @@ if ($userID != 1) {
         $actions = "<button class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteUserConfirm$id'>Suprimer</button>";
         $img = $user['img'];
         require "blocks/usersRow.php";
+        require "blocks/delleteUserConfirm.php";
     }
 }
