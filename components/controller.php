@@ -39,6 +39,9 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
     $result = checkUserPass($email, $password);
+    if ($result == 'NOTVALID') {
+        header("Location: ../index.php?page=login&error=Email non Validé !");
+    }
     if ($result == 'NOUSER') {
         header("Location: ../index.php?page=login&error=Utilisatuer Inconu !");
     }

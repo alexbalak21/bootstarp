@@ -119,6 +119,10 @@ function checkUserPass($email, $password)
     $stmt->execute();
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     $data = $stmt->fetch();
+    $valid = $data['validated'];
+    if ($valid == 0) {
+        return 'NOTVALID';
+    }
     if (empty($data)) {
         return 'NOUSER';
     }
