@@ -575,7 +575,7 @@ function delSub($subID)
     $pdo = null;
     return $del;
 }
-
+//-------------------------------------------------------------UPDATE SUBS COUNT OF EVENT
 function updateSubsCount()
 {
     db_connect();
@@ -590,7 +590,7 @@ function updateSubsCount()
         return null;
     }
 }
-
+//----------------------------------------------------------------COUNT EVNT SUBS 
 function subsCount($eventID)
 {
     db_connect();
@@ -598,5 +598,13 @@ function subsCount($eventID)
     $subs = $pdo->query("SELECT `id` FROM `subs` WHERE eventID = $eventID")->fetchAll(PDO::FETCH_ASSOC);
     $count = count($subs);
     return $count;
-
 }
+
+function getUserMessages($userID)
+{
+    db_connect();
+    global $pdo;
+    $messages = $pdo->query("SELECT * FROM `messages` WHERE `toID` = $userID")->fetch(PDO::FETCH_ASSOC);
+    return $messages;
+}
+
