@@ -2,7 +2,7 @@
 $userID = checkConnect();
 $register = "<li class='nav-item mx-5'><a class='nav-link' href='?page=signin#main'>Inscription</a></li>";
 $events = "<li class='nav-item mx-5'><a class='nav-link' href='?page=events#main'>Evenments</a></li>";
-$login = "<li class='nav-item mx-5'><a class='nav-link' href='?page=login#main'>Log in</a></li>";
+$login = "<li class='nav-item mx-5'><a class='nav-link' href='?page=login#main'>Connection</a></li>";
 $eventTab = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eventsTable#main'>EVENT TABLE</a></li>";
 $dropDown = "
 <li class='nav-item dropdown mx-5'>
@@ -32,8 +32,8 @@ $AdminEventList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=eve
 $AdminsubsList = "<li class='nav-item mx-5'><a class='nav-link' href='?page=subsTable'>Lste des Inscriptions  </a></li>";
 
 $link1 = $events;
-$link2 = $register;
-$link3 = $contact;
+$link2 = $contact;
+$link3 = $register;
 $link4 = $login;
 $link5 = "";
 $link6 = "";

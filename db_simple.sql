@@ -51,11 +51,3 @@ CREATE TABLE `messages` (
   FOREIGN KEY (formID) REFERENCES users(id),
   FOREIGN KEY (toID) REFERENCES users(id)
 );
-
-
-CREATE TABLE `subs` (
-  `id` int(6) UNSIGNED NOT NULL,
-  `eventID` int(6) UNSIGNED DEFAULT NULL,
-  `userID` int(6) UNSIGNED DEFAULT NULL,
-  `subTime` timestamp NOT NULL DEFAULT current_timestamp()
-);
