@@ -7,6 +7,7 @@ $userID = checkConnect();
 if (isset($_GET['id'])) {
     //--------------------------HYDRATE LA PAGE EVENT
     $eventID = $_GET['id'];
+    $today = date("Y-m-d");
     $event = getEventByID($eventID);
     $creatorID = $event['creatorID'];
     $count = subsCount($eventID);

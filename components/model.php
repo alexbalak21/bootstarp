@@ -12,7 +12,6 @@ function db_connect()
     $db_name = "eventbright";
     try {
         $pdo = new PDO("mysql:host=$servername;dbname=$db_name", $email, $password);
-        // set the PDO error mode to exception
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
@@ -51,7 +50,7 @@ function registerUser($email, $firstname, $lastname, $password, $img = "profile.
 }
 
 //----------------------------------------------SEND VALIDATION TOKEN TO MAIL
-function sendValidation($userID)
+function createValidationLink($userID)
 {
     db_connect();
     global $pdo;
@@ -590,7 +589,7 @@ function updateSubsCount()
         return null;
     }
 }
-//----------------------------------------------------------------COUNT EVNT SUBS 
+//----------------------------------------------------------------COUNT EVNT SUBS
 function subsCount($eventID)
 {
     db_connect();
@@ -607,4 +606,3 @@ function getUserMessages($userID)
     $messages = $pdo->query("SELECT * FROM `messages` WHERE `toID` = $userID")->fetch(PDO::FETCH_ASSOC);
     return $messages;
 }
-

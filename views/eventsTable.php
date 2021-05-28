@@ -7,7 +7,7 @@ if ($userID) {
 
 ?>
 <main id='main' class="mt-4 container">
-<h1 class="text-center my-4">TABLE DES EVENMENTS</h1>
+<h1 class="text-center my-4">TABLE DE VOS EVENMENTS</h1>
 <table class="table text-center">
     <tr>
 <th>Date</th>
@@ -24,3 +24,8 @@ require_once "components/viewsControllers/tab_controller.php";
 </main>
 
 
+<?php
+
+$shortTime = substr($time, 0, 5);
+
+?>

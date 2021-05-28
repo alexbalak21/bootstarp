@@ -28,7 +28,7 @@ if (!checkConnect()) {
     <div class="d-flex justify-content-center">
     <div class="col-md-4 col-lg-2 py-2 text-center">
       <b><label class="form-label">Date:</label></b>
-      <input type="date" name="date" class="form-control" required />
+      <input type="date" name="date" class="form-control" min="<?=$today ?>" required />
     </div>
     </div>
     <div class="d-flex justify-content-center">

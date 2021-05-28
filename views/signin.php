@@ -2,8 +2,12 @@
   <h2 class="text-center">S'inscrire:</h2>
   <form class="row g-3 needs-validation" enctype="multipart/form-data" action="components/controller.php" method="POST" id="registerUser" novalidate>
   <div class="col-12 d-flex justify-content-center">
-  <img id="formLogo" class="col-12 mb-4" src="assets/person-plus.svg" alt="person-plus">
+  <a href="#" class=""><img id="formLogo" src="assets/person-plus.svg" alt="person-plus"></a>
   </div>
+  <div class="col-12 row text-center mb-4">
+    <p class="text-muted">Ajoutez une image</p>
+  </div>
+
     <input type="file" name="fileToUpload" id="fileUpload" class="form-control-file">
 
     <div class="col-md-6">
